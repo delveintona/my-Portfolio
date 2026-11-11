@@ -991,3 +991,29 @@ button {
   width: clamp(20px, 1.2vw, 38px);
   height: auto;
 }
+
+/* 스크롤바는 숨김 (휠·터치·키보드 스크롤은 그대로 동작) */
+* {
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+/* 항목 안의 줄바꿈 표시 */
+.entries li span:last-child {
+  white-space: pre-line;
+}
+
+/* 로고 버튼: 누르면 첫 화면 */
+.site-logo {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.site-logo:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+}

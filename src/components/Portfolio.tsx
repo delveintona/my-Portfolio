@@ -55,7 +55,14 @@ export default function Portfolio() {
 
   return (
     <main className="app" data-over={panel ?? undefined}>
-      <SiteHeader />
+      <SiteHeader
+        onHome={() => {
+          resetProject();
+          setPanel(null);
+          setCategory("All");
+          setIndex(0);
+        }}
+      />
       <CategoryFilters
         categories={categories}
         value={category}

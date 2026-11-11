@@ -11,7 +11,7 @@ export type PortfolioProject = {
   title: string;
   eyebrow?: string; // 카드 상단/상세 상단의 짧은 영문 부제 (없으면 카테고리 표시)
   subtitle?: string; // 한 줄 소개
-  category: string; // 촬영 / 스탭 / vibe coding / 기획
+  category: string; // 키스탭(주도·책임진 작업) / 스탭 / 기획 / vibe coding
   period?: string; // 카드 상단 문구 (기간, 건수 등)
   year?: string;
   client?: string;
@@ -68,24 +68,19 @@ export const profile = {
     { year: "2020", text: "ITQ 엑셀 · 한글 (한국생산성본부)" },
   ] as Entry[],
   activities: [
-    { year: "2026-2", text: "영상놀 — 고려대 세종캠퍼스 영화 동아리 (연출 담당)" },
-    { year: "2026", text: "글사랑 — 문집 제작 (시, 소설 집필)" },
-    { year: "2023", text: "무단외박 — 밴드부 (홍보 담당)" },
-    { year: "동아리", text: "레전드 — 농구부" },
-    { year: "2026.07 ~", text: "UIA SNS 운영팀 팀장 — 9개 대학 11개 캠퍼스 연합" },
-    { year: "2026", text: "UIA 춘천 해커톤 · 2026 사회적가치페스타 · 2026 국제경주포럼" },
+    { year: "2026.07 ~", text: "UIA (대학 임팩트 얼라이언스, 9개 대학 11개 캠퍼스 연합)\nSNS팀 팀장 · 2026 춘천 해커톤 참여 (우수상)" },
+    { year: "동아리", text: "영상놀 (2026-2) — 고려대 세종캠퍼스 영화 동아리, 연출 담당\n글사랑 (2026) — 문집 제작, 시·소설 집필\n무단외박 (2023) — 밴드부, 홍보 담당\n레전드 — 농구부" },
+    { year: "2026", text: "2026 사회적가치페스타 · 2026 국제경주포럼" },
     { year: "창업캠프", text: "Union 창업 캠프 · UI/UX 창업 캠프" },
-    { year: "여행", text: "서울역~전주역 9박 10일 도보 · 파주~대전역 도보" },
   ] as Entry[],
   experience: [
-    { year: "촬영감독", text: "『밥 식기 전에 들어와』, 『신도림 사이코』 — 결 스튜디오 단편영화" },
-    { year: "촬영팀", text: "『늪에 비친 새』(독립 단편영화), 미국 단편영화(해외 제작) — 모두 공개 전" },
-    { year: "촬영팀", text: "상업 광고 3건 — 리코브, 아큐브, 도화엔지니어링" },
-    { year: "연출팀", text: "단편영화 『청소』" },
     { year: "2026.07 ~", text: "UIA SNS팀 팀장 — 9개 대학 11개 캠퍼스 연합 공식 SNS 기획·운영, 행사 촬영 및 하이라이트·숏폼 제작" },
     { year: "2026.08 ~ 10", text: "고연전 불꽃응원단 전담 촬영 — 정기 연습부터 공연까지 활동 전 과정 기록" },
     { year: "2026.06 ~ 07", text: "세종테크노파크 일경험 프로젝트 2주 인턴 — 세종시 지역 기업 지원사업의 강점·문제점 분석 및 개선안 도출, 최종 발표 장려상" },
     { year: "2024.02 ~ 2026.02", text: "육군 제6사단 GOP 수송부 운전병 → 운전부사관(하사 전역) — 병사·간부 통산 15,000km 운행, 수송부 행정·공문 담당" },
+    { year: "촬영감독", text: "『밥 식기 전에 들어와』, 『신도림 사이코』 — 결 스튜디오 단편영화" },
+    { year: "촬영팀", text: "『늪에 비친 새』(독립 단편영화), 미국 단편영화(해외 제작) — 모두 공개 전\n상업 광고 3건 — 리코브, 아큐브, 도화엔지니어링" },
+    { year: "연출팀", text: "단편영화 『청소』" },
   ] as Entry[],
 };
 
@@ -106,7 +101,7 @@ export const projects: PortfolioProject[] = [
     title: "단편영화 촬영팀",
     eyebrow: "Short Film · Camera Team",
     subtitle: "단편영화 2건 참여",
-    category: "촬영",
+    category: "스탭",
     period: "2건",
     color: "#2b4fd6",
     role: ["촬영팀"],
@@ -120,7 +115,7 @@ export const projects: PortfolioProject[] = [
     title: "상업 광고 촬영팀",
     eyebrow: "Commercial · Camera Team",
     subtitle: "리코브 · 아큐브 · 도화엔지니어링",
-    category: "촬영",
+    category: "스탭",
     period: "3건",
     color: "#3f9a5a",
     role: ["촬영팀"],
@@ -135,7 +130,7 @@ export const projects: PortfolioProject[] = [
     title: "『밥 식기 전에 들어와』",
     eyebrow: "Short Film · Director of Photography",
     subtitle: "결 스튜디오 · 촬영감독",
-    category: "촬영",
+    category: "키스탭",
     period: "촬영감독",
     color: "#d9663f",
     role: ["촬영감독"],
@@ -149,7 +144,7 @@ export const projects: PortfolioProject[] = [
     title: "『신도림 사이코』",
     eyebrow: "Short Film · Director of Photography",
     subtitle: "결 스튜디오 · 촬영감독",
-    category: "촬영",
+    category: "키스탭",
     period: "촬영감독",
     color: "#7442d6",
     role: ["촬영감독"],
@@ -163,7 +158,7 @@ export const projects: PortfolioProject[] = [
     title: "UIA SNS 운영 및 촬영",
     eyebrow: "Social Media · Team Lead",
     subtitle: "9개 대학 11개 캠퍼스 연합 · SNS팀 팀장",
-    category: "촬영",
+    category: "키스탭",
     period: "2026.07 ~ 현재",
     color: "#a8913a",
     role: ["SNS팀 팀장", "행사 촬영", "숏폼 제작"],
@@ -176,7 +171,7 @@ export const projects: PortfolioProject[] = [
     title: "고연전 불꽃응원단 전담 촬영",
     eyebrow: "Documentation · Cheer Squad",
     subtitle: "응원단 활동 전 과정 기록",
-    category: "촬영",
+    category: "키스탭",
     period: "2026.08 ~ 2026.10",
     color: "#9a6a82",
     role: ["전담 촬영"],
@@ -189,7 +184,7 @@ export const projects: PortfolioProject[] = [
     title: "「아무것도 아니야」 뮤직비디오",
     eyebrow: "Music Video · School Project",
     subtitle: "일본어 콘텐츠 제작 · 교내 장려상",
-    category: "촬영",
+    category: "키스탭",
     period: "2021",
     color: "#c2603f",
     role: ["PD", "촬영", "기획", "배우 섭외"],
@@ -227,6 +222,20 @@ export const projects: PortfolioProject[] = [
     awards: [{ year: "2026", text: "UIA 춘천 해커톤 우수상 — 루트임팩트 대표" }],
     description:
       "춘천의 청소년 인구 감소 문제에서 출발한 공공 서비스 디자인입니다.\n청소년이 찾지 않던 춘천시립청소년도서관 2층을 '떠드는 곳'과 '조용한 곳'으로 나누고, 춘천 관내 중·고등학교 동아리가 모인 청소년 운영위원회가 그 층을 운영하도록 설계했습니다.\n소리 크기별 공간 구성(Solution 01)과 어른이 아닌 청소년이 책과 규칙을 정하는 운영 구조(Solution 02)를 제안했습니다.",
+  },
+  {
+    id: "sejong-rookie-label",
+    title: "세종 루키 레이블",
+    eyebrow: "Youth Culture Living Lab",
+    subtitle: "대학생 크루와 중·고교 공연동아리가 함께 만드는 청소년 문화 리빙랩",
+    category: "기획",
+    period: "2026 · 2차 발표평가",
+    color: "#2f9e8f",
+    projectType: "collaboration",
+    role: ["기획", "조사", "설계", "발표 자료 제작"],
+    contribution: "기획 · 조사 · 설계 · 발표 자료 제작 — 전 과정 담당 (팀 온동네)",
+    description:
+      "2026 세종한두리캠퍼스 글로벌 리빙랩 공모전(문화·관광 분야) 2차 발표평가에 팀 온동네로 참여한 기획입니다.\n학교 축제 무대를 마친 공연동아리 학생들이 '그다음은 어떻게 하지?'라는 질문 앞에서 막막해하는 문제에서 출발했습니다. 외부 무대에 서려면 무대 섭외, 장비·음향, 홍보, 촬영·기록, 학교·보호자 허락까지 직접 해결해야 하지만 물어볼 사람이 없다는 점에 주목했습니다.\n해결 방안은 세종의 중2~고2 공연동아리 1팀과 한두리캠퍼스 대학생 크루 3~4명(촬영·기획·디자인·홍보)이 섭외부터 기록까지 한 팀으로 움직이는 구조입니다. 새 공연장 없이 대학 축제 '루키 스테이지'(봄 데뷔 → 9월 공동캠퍼스 피날레)를 활용합니다.\n조사, 공동 설계, 시범 운영, 검증, 확산의 리빙랩 5단계로 설계했고, 설문 100명·인터뷰 13명 조사와 3팀 시범 운영, 누적 관객 300명 이상을 목표로 효과를 검증하는 계획까지 담았습니다.\n공모전 2차 발표평가까지 진출했습니다.",
   },
   {
     id: "solopd",
@@ -285,6 +294,11 @@ export function getOrderedProjects(): PortfolioProject[] {
   return [...projects.filter((p) => p.featured), ...projects.filter((p) => !p.featured)];
 }
 
+const CATEGORY_ORDER = ["키스탭", "스탭", "기획", "vibe coding"];
+
 export function getCategories(): string[] {
-  return ["All", ...Array.from(new Set(projects.map((p) => p.category)))];
+  const present = new Set(projects.map((p) => p.category));
+  const ordered = CATEGORY_ORDER.filter((c) => present.has(c));
+  const rest = Array.from(present).filter((c) => !CATEGORY_ORDER.includes(c));
+  return ["All", ...ordered, ...rest];
 }
