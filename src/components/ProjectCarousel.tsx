@@ -15,8 +15,10 @@ type Props = {
 
 const VISIBLE = 4; // 중앙 기준 좌우로 렌더링할 카드 수
 const THRESHOLD = 50;
-const WHEEL_STEP = 48; // 휠 한 칸으로 인정하는 누적 거리
-const WHEEL_COOLDOWN = 120; // ms
+const WHEEL_STEP = 70; // 카드 한 장 넘기는 데 필요한 누적 휠 거리 (클수록 둔감)
+const WHEEL_COOLDOWN = 170; // ms: 한 장 넘긴 뒤 다음 장까지 최소 간격 (클수록 천천히)
+const WHEEL_MAX_PER_GESTURE = 4; // 한 번 굴려서 넘어가는 최대 카드 수
+const WHEEL_IDLE = 160; // ms: 이 시간 동안 휠 입력이 없으면 다음 제스처로 인정
 
 export default function ProjectCarousel({ projects, index, onIndexChange, onOpen, hiddenId, keyboardEnabled }: Props) {
   const n = projects.length;
@@ -24,6 +26,7 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
   const [dragging, setDragging] = useState(false);
   const drag = useRef({ down: false, startX: 0, moved: false });
   const section = useRef<HTMLElement>(null);
+  const wheel = useRef({ acc: 0, lastStep: -1e9, lastEvent: 0, count: 0 });
 
   // 순환: 처음 카드가 가운데일 때도 왼쪽에 마지막 카드들이 보이도록
   const go = (i: number) => onIndexChange(((i % n) + n) % n);
@@ -50,19 +53,27 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
   useEffect(() => {
     const el = section.current;
     if (!el || !keyboardEnabled || n < 2) return;
-    let acc = 0;
-    let lastStep = 0;
-    let lastEvent = 0;
+    // 상태는 ref에 보관: index가 바뀌어 이 효과가 다시 만들어져도 쿨다운이 유지됨
+    const w = wheel.current;
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       const now = performance.now();
-      if (now - lastEvent > 220) acc = 0; // 멈췄다가 다시 굴리면 누적 초기화
-      lastEvent = now;
-      acc += Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-      if (Math.abs(acc) >= WHEEL_STEP && now - lastStep > WHEEL_COOLDOWN) {
-        onIndexChange((index + (acc > 0 ? 1 : -1) + n) % n);
-        acc = 0;
-        lastStep = now;
+      const gap = now - w.lastEvent;
+      w.lastEvent = now;
+      if (gap > WHEEL_IDLE) {
+        // 휠을 잠시 멈췄다가 다시 굴리면 새 제스처
+        w.acc = 0;
+        w.count = 0;
+      }
+      if (w.count >= WHEEL_MAX_PER_GESTURE) return; // 한 번 굴려서 넘어가는 최대 장수
+      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (w.acc !== 0 && Math.sign(delta) !== Math.sign(w.acc)) w.acc = 0; // 방향을 바꾸면 처음부터
+      w.acc += delta;
+      if (Math.abs(w.acc) >= WHEEL_STEP && now - w.lastStep >= WHEEL_COOLDOWN) {
+        onIndexChange((index + (w.acc > 0 ? 1 : -1) + n) % n);
+        w.acc = 0;
+        w.lastStep = now;
+        w.count += 1;
       }
     };
     el.addEventListener("wheel", onWheel, { passive: false });

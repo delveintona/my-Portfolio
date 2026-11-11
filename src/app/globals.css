@@ -89,7 +89,7 @@ button {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: 0 clamp(20px, 4.4vw, 64px);
+  padding: 0 clamp(20px, 4.1vw, 140px);
   overflow-x: clip;
 }
 
@@ -97,12 +97,12 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding-top: clamp(22px, 4vw, 48px);
+  padding-top: clamp(22px, 2.2vw, 80px);
 }
 .site-logo {
   font-family: Georgia, "Times New Roman", serif;
   font-style: italic;
-  font-size: clamp(26px, 3.2vw, 38px);
+  font-size: clamp(26px, 2.2vw, 64px);
   font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--accent);
@@ -111,16 +111,16 @@ button {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 6px;
+  gap: 0.4vw;
 }
 .site-label {
-  font-size: clamp(13px, 1.6vw, 22px);
+  font-size: clamp(11px, 0.95vw, 30px);
   font-weight: 700;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.22em;
   color: var(--accent);
 }
 .site-name {
-  font-size: clamp(14px, 1.5vw, 20px);
+  font-size: clamp(12px, 0.95vw, 30px);
 }
 
 /* ---------- filters ---------- */
@@ -130,8 +130,8 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  margin-top: clamp(24px, 4vw, 52px);
-  padding: 5px;
+  margin-top: clamp(14px, 1.1vw, 40px);
+  padding: 0.25vw;
   border-radius: 999px;
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
@@ -161,13 +161,13 @@ button {
 .filter-tab {
   position: relative;
   z-index: 1;
-  padding: 9px clamp(14px, 1.8vw, 24px);
+  padding: clamp(7px, 0.5vw, 16px) clamp(14px, 1.3vw, 40px);
   border: 0;
   border-radius: 999px;
   background: transparent;
-  font-size: clamp(13px, 1.25vw, 17px);
+  font-size: clamp(12px, 0.95vw, 30px);
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   color: #e9c485;
   transition: color 0.35s var(--ease);
 }
@@ -180,15 +180,16 @@ button {
 
 /* ---------- carousel (arc fan) ---------- */
 .carousel {
-  --card-w: clamp(200px, 17vw, 270px);
+  --card-w: clamp(200px, 21.9vw, 620px);
   --card-h: calc(var(--card-w) * 1.5);
-  --R: calc(var(--card-h) * 2);
-  --step: 8.5deg;
+  --R: calc(var(--card-h) * 2.8);
+  --step: 9deg;
+  --face-r: max(12px, calc(var(--card-w) * 0.034));
   position: relative;
   flex: 1;
   min-height: 520px;
   overflow: hidden;
-  margin: 0 calc(-1 * clamp(20px, 4.4vw, 64px));
+  margin: 0 calc(-1 * clamp(20px, 4.1vw, 140px));
 }
 @media (max-width: 700px) {
   .carousel {
@@ -203,7 +204,7 @@ button {
   position: absolute;
   left: 0;
   right: 0;
-  top: clamp(44px, 8vh, 90px);
+  top: clamp(40px, 7.5vw, 260px);
   height: var(--card-h);
   touch-action: pan-y;
   user-select: none;
@@ -254,7 +255,7 @@ button {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  border-radius: 22px;
+  border-radius: var(--face-r, 18px);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
@@ -262,7 +263,7 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(16px, 1.8vw, 26px);
+  padding: max(14px, calc(var(--card-w) * 0.06));
   background: var(--c);
   color: #fff;
   box-shadow: 0 18px 44px -16px rgba(0, 0, 0, 0.6);
@@ -311,9 +312,9 @@ button {
   text-align: right;
 }
 .fan-cat {
-  font-size: clamp(11px, 1.05vw, 14px);
+  font-size: max(10px, calc(var(--card-w) * 0.034));
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -321,17 +322,18 @@ button {
   overflow: hidden;
 }
 .fan-period {
-  font-size: clamp(11px, 1vw, 13px);
-  color: rgba(255, 255, 255, 0.72);
+  font-size: max(10px, calc(var(--card-w) * 0.033));
+  color: rgba(255, 255, 255, 0.78);
 }
 .fan-mid {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: calc(var(--card-w) * 0.014);
 }
 .fan-title {
-  font-size: clamp(20px, 2.2vw, 30px);
+  font-size: max(16px, calc(var(--card-w) * 0.078));
   font-weight: 700;
+  letter-spacing: -0.01em;
   line-height: 1.15;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -339,11 +341,11 @@ button {
   overflow: hidden;
 }
 .fan-sub {
-  font-size: clamp(12px, 1.1vw, 15px);
-  color: rgba(255, 255, 255, 0.78);
+  font-size: max(11px, calc(var(--card-w) * 0.043));
+  color: rgba(255, 255, 255, 0.8);
 }
 .fan-num {
-  font-size: clamp(36px, 4.2vw, 58px);
+  font-size: max(30px, calc(var(--card-w) * 0.141));
   font-weight: 700;
   line-height: 1;
 }
@@ -366,6 +368,11 @@ button {
 }
 .carousel-controls {
   transition: opacity 0.4s var(--ease);
+}
+@media (min-width: 1000px) and (hover: hover) {
+  .carousel-controls {
+    display: none;
+  }
 }
 .app[data-over="about"] .carousel-controls {
   opacity: 0;
@@ -410,7 +417,7 @@ button {
 .float-nav {
   position: fixed;
   left: 50%;
-  bottom: calc(18px + env(safe-area-inset-bottom));
+  bottom: calc(clamp(14px, 1.25vw, 40px) + env(safe-area-inset-bottom));
   transform: translateX(-50%);
   z-index: 40;
   display: flex;
@@ -427,16 +434,16 @@ button {
   z-index: 70;
 }
 .nav-item {
-  min-width: clamp(84px, 9vw, 144px);
-  padding: 14px 10px 12px;
+  min-width: clamp(84px, 7.15vw, 230px);
+  padding: clamp(9px, 0.55vw, 18px) 10px clamp(8px, 0.45vw, 16px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 0.25vw;
   border: 0;
   border-radius: 999px;
   background: transparent;
-  font-size: clamp(13px, 1.2vw, 16px);
+  font-size: clamp(11px, 0.7vw, 22px);
   font-weight: 600;
   color: var(--fg);
   position: relative;
@@ -808,7 +815,7 @@ button {
 
 .entries li {
   display: grid;
-  grid-template-columns: clamp(64px, 8vw, 110px) 1fr;
+  grid-template-columns: clamp(86px, 9vw, 190px) 1fr;
   gap: 14px;
   padding: 10px 0;
   font-size: clamp(14px, 1.3vw, 18px);
@@ -978,4 +985,9 @@ button {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+.nav-item svg {
+  width: clamp(20px, 1.2vw, 38px);
+  height: auto;
 }
