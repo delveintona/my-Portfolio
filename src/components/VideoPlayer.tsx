@@ -26,17 +26,20 @@ function isSafeEmbed(url: string) {
 /** 포스터 클릭 후 재생. 자동 재생 없음, 미디어는 사용자가 누를 때만 로드 */
 export default function VideoPlayer({ project }: { project: PortfolioProject }) {
   const { video, thumbnail, aspectRatio = "16/9", title } = project;
+  const fill = project.color ?? "#2b2b33";
   const [started, setStarted] = useState(false);
   const [failed, setFailed] = useState(false);
-  const poster = video?.poster ?? thumbnail;
+  const poster = video?.poster ?? thumbnail ?? "";
   const ratio = RATIO[aspectRatio];
 
   const src = video?.src?.trim();
   const playable =
     !!video && !!src && !failed && (video.type === "file" || isSafeEmbed(src));
 
-  const posterEl = (
+  const posterEl = poster ? (
     <Image src={poster} alt="" fill sizes="(max-width: 900px) 100vw, 900px" unoptimized className="vp-poster" />
+  ) : (
+    <div className="vp-fill" style={{ background: fill }} />
   );
 
   if (!playable) {
@@ -74,7 +77,7 @@ export default function VideoPlayer({ project }: { project: PortfolioProject }) 
           autoPlay
           playsInline
           preload="metadata"
-          poster={poster}
+          poster={poster || undefined}
           src={src}
           onError={() => setFailed(true)}
         />

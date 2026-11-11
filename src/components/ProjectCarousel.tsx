@@ -12,7 +12,7 @@ type Props = {
   keyboardEnabled: boolean;
 };
 
-const VISIBLE = 3; // 중앙 기준 좌우로 렌더링할 카드 수
+const VISIBLE = 5; // 중앙 기준 좌우로 렌더링할 카드 수
 const THRESHOLD = 50;
 
 export default function ProjectCarousel({ projects, index, onIndexChange, onOpen, keyboardEnabled }: Props) {
@@ -21,15 +21,22 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
   const [dragging, setDragging] = useState(false);
   const drag = useRef({ down: false, startX: 0, moved: false });
 
-  const go = (i: number) => onIndexChange(Math.max(0, Math.min(n - 1, i)));
+  // 순환: 처음 카드가 가운데일 때도 왼쪽에 마지막 카드들이 보이도록
+  const go = (i: number) => onIndexChange(((i % n) + n) % n);
+  const wrapOffset = (i: number) => {
+    let d = (((i - index) % n) + n) % n;
+    if (d > n / 2) d -= n;
+    return d;
+  };
 
   useEffect(() => {
     if (!keyboardEnabled) return;
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null;
       if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
-      if (e.key === "ArrowLeft") onIndexChange(Math.max(0, index - 1));
-      else if (e.key === "ArrowRight") onIndexChange(Math.min(n - 1, index + 1));
+      if (n === 0) return;
+      if (e.key === "ArrowLeft") onIndexChange((index - 1 + n) % n);
+      else if (e.key === "ArrowRight") onIndexChange((index + 1) % n);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -75,7 +82,7 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
       >
         <div className="track" style={{ transform: `translateX(${dx * 0.35}px)` }}>
           {projects.map((p, i) => {
-            const offset = i - index;
+            const offset = wrapOffset(i);
             if (Math.abs(offset) > VISIBLE) return null;
             return (
               <ProjectCard
@@ -96,7 +103,7 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
       </div>
 
       <div className="carousel-controls">
-        <button type="button" className="round-btn" aria-label="이전 프로젝트" disabled={index === 0} onClick={() => go(index - 1)}>
+        <button type="button" className="round-btn" aria-label="이전 프로젝트" disabled={n < 2}onClick={() => go(index - 1)}>
           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
             <path d="M11 3L5 9l6 6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -104,7 +111,7 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
         <span className="counter" aria-live="polite">
           {String(index + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
         </span>
-        <button type="button" className="round-btn" aria-label="다음 프로젝트" disabled={index === n - 1} onClick={() => go(index + 1)}>
+        <button type="button" className="round-btn" aria-label="다음 프로젝트" disabled={n < 2}onClick={() => go(index + 1)}>
           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
             <path d="M7 3l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

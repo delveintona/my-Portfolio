@@ -12,13 +12,13 @@ import SiteHeader from "./SiteHeader";
 export default function Portfolio() {
   const all = useMemo(() => getOrderedProjects(), []);
   const categories = useMemo(() => getCategories(), []);
-  const [category, setCategory] = useState("ALL");
+  const [category, setCategory] = useState("All");
   const [index, setIndex] = useState(0);
   const [detailId, setDetailId] = useState<string | null>(null);
   const [panel, setPanel] = useState<"about" | "contact" | null>(null);
 
   const projects = useMemo(
-    () => (category === "ALL" ? all : all.filter((p) => p.category === category)),
+    () => (category === "All" ? all : all.filter((p) => p.category === category)),
     [all, category],
   );
   const detail = projects.find((p) => p.id === detailId) ?? null;
@@ -26,7 +26,7 @@ export default function Portfolio() {
   const nav: NavKey = panel ?? "work";
 
   return (
-    <main className="app">
+    <main className="app" data-over={!!panel}>
       <SiteHeader />
       <CategoryFilters
         categories={categories}

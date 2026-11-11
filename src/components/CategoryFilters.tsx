@@ -15,7 +15,7 @@ export default function CategoryFilters({ categories, value, onChange }: Props) 
           type="button"
           role="tab"
           aria-selected={c === value}
-          className="filter-chip"
+          className="filter-tab"
           data-active={c === value}
           onClick={() => onChange(c)}
         >

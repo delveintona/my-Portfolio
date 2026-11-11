@@ -10,10 +10,11 @@ type Props = {
   onClose: () => void;
   children: React.ReactNode;
   wide?: boolean;
+  keepNav?: boolean; // 하단 메뉴/카운터를 위에 남겨둠 (About/Contact)
 };
 
 /** 접근성 다이얼로그: 포커스 가두기, Esc/배경 클릭 닫기, 닫힌 뒤 트리거로 포커스 복귀 */
-export default function Dialog({ label, onClose, children, wide }: Props) {
+export default function Dialog({ label, onClose, children, wide, keepNav }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
 
@@ -60,7 +61,7 @@ export default function Dialog({ label, onClose, children, wide }: Props) {
   }, []);
 
   return (
-    <div className="dlg-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+    <div className={`dlg-backdrop ${keepNav ? "keep-nav" : ""}`} onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div
         ref={ref}
         role="dialog"
