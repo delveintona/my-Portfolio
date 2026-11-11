@@ -8,18 +8,22 @@ type Props = {
   projects: PortfolioProject[];
   index: number;
   onIndexChange: (i: number) => void;
-  onOpen: (id: string) => void;
+  onOpen: (id: string, face: HTMLElement) => void;
+  hiddenId: string | null;
   keyboardEnabled: boolean;
 };
 
-const VISIBLE = 5; // 중앙 기준 좌우로 렌더링할 카드 수
+const VISIBLE = 4; // 중앙 기준 좌우로 렌더링할 카드 수
 const THRESHOLD = 50;
+const WHEEL_STEP = 48; // 휠 한 칸으로 인정하는 누적 거리
+const WHEEL_COOLDOWN = 120; // ms
 
-export default function ProjectCarousel({ projects, index, onIndexChange, onOpen, keyboardEnabled }: Props) {
+export default function ProjectCarousel({ projects, index, onIndexChange, onOpen, hiddenId, keyboardEnabled }: Props) {
   const n = projects.length;
   const [dx, setDx] = useState(0);
   const [dragging, setDragging] = useState(false);
   const drag = useRef({ down: false, startX: 0, moved: false });
+  const section = useRef<HTMLElement>(null);
 
   // 순환: 처음 카드가 가운데일 때도 왼쪽에 마지막 카드들이 보이도록
   const go = (i: number) => onIndexChange(((i % n) + n) % n);
@@ -42,6 +46,29 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
     return () => window.removeEventListener("keydown", onKey);
   }, [keyboardEnabled, index, n, onIndexChange]);
 
+  // 마우스 휠 / 트랙패드: 한 칸씩 카드를 돌림
+  useEffect(() => {
+    const el = section.current;
+    if (!el || !keyboardEnabled || n < 2) return;
+    let acc = 0;
+    let lastStep = 0;
+    let lastEvent = 0;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const now = performance.now();
+      if (now - lastEvent > 220) acc = 0; // 멈췄다가 다시 굴리면 누적 초기화
+      lastEvent = now;
+      acc += Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (Math.abs(acc) >= WHEEL_STEP && now - lastStep > WHEEL_COOLDOWN) {
+        onIndexChange((index + (acc > 0 ? 1 : -1) + n) % n);
+        acc = 0;
+        lastStep = now;
+      }
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [keyboardEnabled, index, n, onIndexChange]);
+
   const finish = () => {
     const d = drag.current;
     if (!d.down) return;
@@ -58,7 +85,7 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
   }
 
   return (
-    <section className="carousel" aria-roledescription="carousel" aria-label="프로젝트">
+    <section ref={section} className="carousel" aria-roledescription="carousel" aria-label="프로젝트">
       <div
         className="stage"
         data-dragging={dragging}
@@ -91,9 +118,10 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
                 offset={offset}
                 total={n}
                 position={i}
-                onSelect={() => {
-                  if (drag.current.moved) return;
-                  if (offset === 0) onOpen(p.id);
+                hidden={hiddenId === p.id}
+                onSelect={(face) => {
+                  if (drag.current.moved || hiddenId) return;
+                  if (offset === 0) onOpen(p.id, face);
                   else go(i);
                 }}
               />
@@ -103,7 +131,7 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
       </div>
 
       <div className="carousel-controls">
-        <button type="button" className="round-btn" aria-label="이전 프로젝트" disabled={n < 2}onClick={() => go(index - 1)}>
+        <button type="button" className="round-btn" aria-label="이전 프로젝트" disabled={n < 2} onClick={() => go(index - 1)}>
           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
             <path d="M11 3L5 9l6 6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -111,7 +139,7 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
         <span className="counter" aria-live="polite">
           {String(index + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
         </span>
-        <button type="button" className="round-btn" aria-label="다음 프로젝트" disabled={n < 2}onClick={() => go(index + 1)}>
+        <button type="button" className="round-btn" aria-label="다음 프로젝트" disabled={n < 2} onClick={() => go(index + 1)}>
           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
             <path d="M7 3l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

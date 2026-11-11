@@ -4,16 +4,35 @@ import Image from "next/image";
 import { projectTypeLabel, type PortfolioProject } from "@/data/portfolio";
 import Dialog from "./Dialog";
 import VideoPlayer from "./VideoPlayer";
+import { MORPH_MS } from "./CardMorph";
 
-export default function ProjectDetailDialog({ project, onClose }: { project: PortfolioProject; onClose: () => void }) {
+function isVertical(ratio?: string) {
+  if (!ratio) return false;
+  const [w, h] = ratio.split("/").map(Number);
+  return !!w && !!h && h > w;
+}
+
+type Props = {
+  project: PortfolioProject;
+  mediaHidden: boolean; // 전환 중에는 고스트 카드가 미디어 자리를 대신함
+  onCloseStart: () => void;
+  onClose: () => void;
+};
+
+export default function ProjectDetailDialog({ project, mediaHidden, onCloseStart, onClose }: Props) {
   const meta = [project.category, project.period ?? project.year, project.projectType && projectTypeLabel[project.projectType]]
     .filter(Boolean)
     .join(" · ");
 
   return (
-    <Dialog label={project.title} onClose={onClose} wide>
+    <Dialog label={project.title} onClose={onClose} onCloseStart={onCloseStart} exitMs={MORPH_MS + 60} wide>
       <article className="detail">
-        <div className="detail-media" data-vertical={project.aspectRatio === "9/16"}>
+        <div
+          className="detail-media"
+          data-morph-target
+          data-hidden={mediaHidden}
+          data-vertical={isVertical(project.aspectRatio)}
+        >
           <VideoPlayer project={project} />
         </div>
 
@@ -26,21 +45,21 @@ export default function ProjectDetailDialog({ project, onClose }: { project: Por
           {project.description && <p className="detail-desc">{project.description}</p>}
 
           {project.contribution && (
-            <>
+            <div>
               <h3 className="sec">CONTRIBUTION</h3>
               <p className="lead">{project.contribution}</p>
-            </>
+            </div>
           )}
 
           {project.role && project.role.length > 0 && (
-            <>
+            <div>
               <h3 className="sec">ROLE</h3>
               <p className="lead">{project.role.join(", ")}</p>
-            </>
+            </div>
           )}
 
           {project.awards && project.awards.length > 0 && (
-            <>
+            <div>
               <h3 className="sec">AWARD</h3>
               <ul className="entries">
                 {project.awards.map((a) => (
@@ -50,29 +69,29 @@ export default function ProjectDetailDialog({ project, onClose }: { project: Por
                   </li>
                 ))}
               </ul>
-            </>
+            </div>
           )}
 
           {project.credits && project.credits.length > 0 && (
-            <>
+            <div>
               <h3 className="sec">CREDITS</h3>
               <p className="lead">{project.credits.join(" / ")}</p>
-            </>
+            </div>
           )}
 
           {project.links && project.links.length > 0 && (
-            <>
+            <div>
               <h3 className="sec">LINKS</h3>
-              <ul className="entries">
+              <ul className="link-pills">
                 {project.links.map((l) => (
                   <li key={l.url}>
-                    <a className="info-link" href={l.url} target="_blank" rel="noopener noreferrer">
+                    <a className="link-pill" href={l.url} target="_blank" rel="noopener noreferrer">
                       {l.label} ↗
                     </a>
                   </li>
                 ))}
               </ul>
-            </>
+            </div>
           )}
         </div>
 

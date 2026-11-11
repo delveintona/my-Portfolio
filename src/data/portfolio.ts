@@ -20,7 +20,7 @@ export type PortfolioProject = {
   duration?: string;
   color?: string; // 카드 배경색
   thumbnail?: string; // 카드/상세 이미지 (없으면 color 사용)
-  aspectRatio?: "16/9" | "3/2" | "9/16" | "1/1";
+  aspectRatio?: `${number}/${number}`; // 예: "16/9", "9/16", "1866/1049" (이미지 원본 비율)
   video?: {
     type: "file" | "youtube" | "vimeo";
     src: string; // file: "/videos/xxx.mp4" · youtube/vimeo: 임베드 URL
@@ -81,7 +81,7 @@ export const profile = {
   experience: [
     { year: "촬영", text: "단편영화 촬영팀 2건 (늪에 비친 새, 미국 영화)" },
     { year: "촬영", text: "상업 광고 촬영팀 3건" },
-    { year: "촬영", text: "소규모 스튜디오 촬영감독 · 영화 2건" },
+    { year: "촬영", text: "소규모 스튜디오 촬영감독 · 『밥 식기 전에 들어와』, 『신도림 사이코』" },
     { year: "촬영", text: "UIA SNS 운영 및 촬영 (3개월)" },
     { year: "촬영", text: "고연전 불꽃응원단 전담 촬영 (2개월)" },
     { year: "연출", text: "단편영화 연출팀 1건" },
@@ -129,14 +129,25 @@ export const projects: PortfolioProject[] = [
     featured: true,
   },
   {
-    id: "studio-dop",
-    title: "소규모 스튜디오 촬영감독",
-    subtitle: "영화 2건",
+    id: "babsikgi",
+    title: "『밥 식기 전에 들어와』",
+    subtitle: "소규모 스튜디오 · 촬영감독",
     category: "촬영",
-    period: "2건",
-    color: "#2f6aa3",
+    period: "촬영감독",
+    color: "#d9663f",
     role: ["촬영감독"],
-    description: "소규모 스튜디오에서 촬영감독으로 영화 2건을 촬영했습니다.",
+    description: "소규모 스튜디오에서 촬영감독으로 참여한 영화입니다.",
+    featured: true,
+  },
+  {
+    id: "sindorim-psycho",
+    title: "『신도림 사이코』",
+    subtitle: "소규모 스튜디오 · 촬영감독",
+    category: "촬영",
+    period: "촬영감독",
+    color: "#7442d6",
+    role: ["촬영감독"],
+    description: "소규모 스튜디오에서 촬영감독으로 참여한 영화입니다.",
     featured: true,
   },
   {
@@ -188,6 +199,8 @@ export const projects: PortfolioProject[] = [
     color: "#2a8c8c",
     projectType: "personal",
     role: ["기획", "개발"],
+    thumbnail: "/projects/solopd.png",
+    aspectRatio: "1866/1049",
     description: "1인 유튜버들을 위한 실시간 AI 독백 프롬프터 웹 서비스입니다.",
     links: [{ label: "solopd.vercel.app", url: "https://solopd.vercel.app" }],
   },
@@ -200,6 +213,8 @@ export const projects: PortfolioProject[] = [
     color: "#4a6a3a",
     projectType: "personal",
     role: ["기획", "개발"],
+    thumbnail: "/projects/drivers-guide.webp",
+    aspectRatio: "2000/1250",
     description: "운전병들을 위한 차폭감 가이드 웹입니다.",
     links: [{ label: "driver-s-guide.vercel.app", url: "https://driver-s-guide.vercel.app/" }],
   },
@@ -212,6 +227,8 @@ export const projects: PortfolioProject[] = [
     color: "#b4456a",
     projectType: "personal",
     role: ["기획", "개발"],
+    thumbnail: "/projects/diary-alarm.png",
+    aspectRatio: "626/1337",
     description:
       "알람을 끄려면 오늘의 계획을 써야 하고, 저녁에는 하루 일과와 일기를 토대로 나만의 음악을 생성하는 앱입니다.",
   },

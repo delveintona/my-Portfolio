@@ -43,7 +43,7 @@ export function AboutDialog({ onClose }: { onClose: () => void }) {
   const aboutIsPlaceholder = profile.about.startsWith("[");
 
   return (
-    <Dialog label="About" onClose={onClose} keepNav wide>
+    <Dialog label="About" onClose={onClose} full>
       <div className="about">
         <div className="about-tabs" role="tablist" aria-label="About 섹션">
           {TABS.map((t) => (
@@ -128,31 +128,39 @@ export function AboutDialog({ onClose }: { onClose: () => void }) {
 
 export function ContactDialog({ onClose }: { onClose: () => void }) {
   return (
-    <Dialog label="Contact" onClose={onClose} keepNav>
-      <div className="about-single contact">
-        <h3 className="sec">EMAIL</h3>
-        {contact.email ? (
-          <a className="info-link" href={`mailto:${contact.email}`}>
-            {contact.email}
-          </a>
-        ) : (
-          <Placeholder>[이메일을 portfolio.ts의 contact.email에 입력하세요]</Placeholder>
-        )}
-
-        <h3 className="sec">SOCIAL</h3>
-        {contact.socials.length > 0 ? (
-          <ul className="entries">
-            {contact.socials.map((s) => (
-              <li key={s.url}>
-                <a className="info-link" href={s.url} target="_blank" rel="noopener noreferrer">
-                  {s.label} ↗
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <Placeholder>[SNS 링크를 portfolio.ts의 contact.socials에 입력하세요]</Placeholder>
-        )}
+    <Dialog label="Contact" onClose={onClose} narrow>
+      <div className="contact">
+        <h3 className="sec">CONTACT</h3>
+        <ul className="contact-list">
+          <li>
+            {contact.email ? (
+              <a className="contact-row" href={`mailto:${contact.email}`}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2.5" />
+                  <path d="M4 7l8 6 8-6" />
+                </svg>
+                {contact.email}
+              </a>
+            ) : (
+              <Placeholder>[이메일을 portfolio.ts의 contact.email에 입력하세요]</Placeholder>
+            )}
+          </li>
+          {contact.socials.map((s) => (
+            <li key={s.url}>
+              <a className="contact-row" href={s.url} target="_blank" rel="noopener noreferrer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
+                </svg>
+                {s.label}
+              </a>
+            </li>
+          ))}
+          {contact.socials.length === 0 && (
+            <li>
+              <Placeholder>[SNS 링크를 portfolio.ts의 contact.socials에 입력하세요]</Placeholder>
+            </li>
+          )}
+        </ul>
       </div>
     </Dialog>
   );

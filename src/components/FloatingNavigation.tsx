@@ -1,5 +1,7 @@
 "use client";
 
+import { useLayoutEffect, useRef } from "react";
+
 export type NavKey = "work" | "about" | "contact";
 
 const ICONS: Record<NavKey, React.ReactNode> = {
@@ -32,9 +34,37 @@ const ITEMS: { key: NavKey; label: string }[] = [
   { key: "contact", label: "Contact" },
 ];
 
+/** 선택 표시(알약)가 Work/About/Contact 사이를 미끄러지듯 이동 */
 export default function FloatingNavigation({ active, onSelect }: { active: NavKey; onSelect: (k: NavKey) => void }) {
+  const wrap = useRef<HTMLElement>(null);
+  const pill = useRef<HTMLSpanElement>(null);
+
+  useLayoutEffect(() => {
+    const place = () => {
+      const w = wrap.current;
+      const p = pill.current;
+      const el = w?.querySelector<HTMLElement>('[aria-current="page"]');
+      if (!w || !p || !el) return;
+      const first = p.dataset.ready !== "true";
+      if (first) p.style.transition = "none";
+      p.style.width = `${el.offsetWidth}px`;
+      p.style.height = `${el.offsetHeight}px`;
+      p.style.transform = `translate(${el.offsetLeft}px, ${el.offsetTop}px)`;
+      p.dataset.ready = "true";
+      if (first) {
+        void p.offsetWidth;
+        p.style.transition = "";
+      }
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    if (wrap.current) ro.observe(wrap.current);
+    return () => ro.disconnect();
+  }, [active]);
+
   return (
-    <nav className="float-nav" aria-label="주요 메뉴">
+    <nav className="float-nav" aria-label="주요 메뉴" ref={wrap}>
+      <span className="nav-pill" ref={pill} aria-hidden="true" />
       {ITEMS.map((it) => (
         <button
           key={it.key}

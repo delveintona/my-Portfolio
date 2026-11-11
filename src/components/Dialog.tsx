@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const FOCUSABLE =
   'a[href],button:not([disabled]),iframe,video[controls],input,select,textarea,[tabindex]:not([tabindex="-1"])';
@@ -8,19 +8,34 @@ const FOCUSABLE =
 type Props = {
   label: string;
   onClose: () => void;
+  onCloseStart?: () => void; // 닫기 요청 즉시 (전환 애니메이션 시작용)
+  exitMs?: number; // 닫힘 애니메이션 길이
   children: React.ReactNode;
-  wide?: boolean;
-  keepNav?: boolean; // 하단 메뉴/카운터를 위에 남겨둠 (About/Contact)
+  wide?: boolean; // 프로젝트 상세
+  full?: boolean; // 화면 전체를 채우는 페이지형 (About)
+  narrow?: boolean; // 작은 모달 (Contact)
 };
 
-/** 접근성 다이얼로그: 포커스 가두기, Esc/배경 클릭 닫기, 닫힌 뒤 트리거로 포커스 복귀 */
-export default function Dialog({ label, onClose, children, wide, keepNav }: Props) {
+/** 접근성 다이얼로그: 포커스 가두기, Esc/배경 클릭 닫기, 닫힘 애니메이션, 닫힌 뒤 트리거로 포커스 복귀 */
+export default function Dialog({ label, onClose, onCloseStart, exitMs = 420, children, wide, full, narrow }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
+  const startRef = useRef(onCloseStart);
+  const closingRef = useRef(false);
+  const [closing, setClosing] = useState(false);
 
   useEffect(() => {
     closeRef.current = onClose;
+    startRef.current = onCloseStart;
   });
+
+  const requestClose = useCallback(() => {
+    if (closingRef.current) return;
+    closingRef.current = true;
+    startRef.current?.();
+    setClosing(true);
+    window.setTimeout(() => closeRef.current(), exitMs);
+  }, [exitMs]);
 
   useEffect(() => {
     const trigger = document.activeElement as HTMLElement | null;
@@ -31,7 +46,7 @@ export default function Dialog({ label, onClose, children, wide, keepNav }: Prop
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
-        closeRef.current();
+        requestClose();
         return;
       }
       if (e.key !== "Tab" || !ref.current) return;
@@ -58,19 +73,24 @@ export default function Dialog({ label, onClose, children, wide, keepNav }: Prop
       document.body.style.overflow = prevOverflow;
       trigger?.focus?.();
     };
-  }, []);
+  }, [requestClose]);
 
   return (
-    <div className={`dlg-backdrop ${keepNav ? "keep-nav" : ""}`} onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+    <div
+      className={`dlg-backdrop ${full ? "full" : ""}`}
+      data-closing={closing}
+      style={{ "--exit": `${exitMs}ms` } as React.CSSProperties}
+      onMouseDown={(e) => !full && e.target === e.currentTarget && requestClose()}
+    >
       <div
         ref={ref}
         role="dialog"
         aria-modal="true"
         aria-label={label}
         tabIndex={-1}
-        className={`dlg-panel ${wide ? "dlg-wide" : ""}`}
+        className={`dlg-panel ${wide ? "dlg-wide" : ""} ${full ? "dlg-full" : ""} ${narrow ? "dlg-narrow" : ""}`}
       >
-        <button type="button" className="dlg-close" aria-label="닫기" onClick={onClose}>
+        <button type="button" className="dlg-close" aria-label="닫기" onClick={requestClose}>
           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
             <path d="M3 3l12 12M15 3L3 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
           </svg>

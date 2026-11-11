@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import type { PortfolioProject } from "@/data/portfolio";
 
 type Props = {
@@ -8,10 +7,29 @@ type Props = {
   offset: number; // 활성 카드 기준 위치 (0 = 중앙)
   total: number;
   position: number;
-  onSelect: () => void;
+  hidden: boolean; // 상세로 날아간 동안 원래 카드는 숨김
+  onSelect: (face: HTMLElement) => void;
 };
 
-export default function ProjectCard({ project, offset, total, position, onSelect }: Props) {
+/** 카드 앞면 (캐러셀 카드와 전환용 고스트 카드가 공유) */
+export function CardFace({ project, number }: { project: PortfolioProject; number: string }) {
+  return (
+    <span className="face face-front">
+      <span className="fan-top">
+        <span className="fan-cat">{project.eyebrow ?? project.category}</span>
+        {project.period && <span className="fan-period">{project.period}</span>}
+      </span>
+      <span className="fan-mid">
+        <span className="fan-title">{project.title}</span>
+        {project.subtitle && <span className="fan-sub">{project.subtitle}</span>}
+      </span>
+      <span className="fan-num">{number}</span>
+    </span>
+  );
+}
+
+/** 메인 카드: 단색 면. 누르면 상세로 날아가며 뒤집혀 사진으로 바뀜 (CardMorph) */
+export default function ProjectCard({ project, offset, total, position, hidden, onSelect }: Props) {
   const active = offset === 0;
   const number = String(position + 1).padStart(2, "0");
 
@@ -19,7 +37,9 @@ export default function ProjectCard({ project, offset, total, position, onSelect
     <button
       type="button"
       className="fan-card"
+      data-card-id={project.id}
       data-active={active}
+      data-hidden={hidden}
       tabIndex={active ? 0 : -1}
       aria-current={active ? "true" : undefined}
       aria-label={
@@ -31,24 +51,13 @@ export default function ProjectCard({ project, offset, total, position, onSelect
         {
           "--o": offset,
           "--ao": Math.abs(offset),
-          background: project.color ?? "#2b2b33",
+          ...(project.color ? { "--c": project.color } : {}),
           zIndex: 20 - Math.abs(offset),
         } as React.CSSProperties
       }
-      onClick={onSelect}
+      onClick={(e) => onSelect(e.currentTarget.querySelector<HTMLElement>(".face-front") ?? e.currentTarget)}
     >
-      {project.thumbnail && (
-        <Image src={project.thumbnail} alt="" fill sizes="320px" unoptimized draggable={false} className="fan-img" />
-      )}
-      <span className="fan-top">
-        <span className="fan-cat">{project.eyebrow ?? project.category}</span>
-        {project.period && <span className="fan-period">{project.period}</span>}
-      </span>
-      <span className="fan-mid">
-        <span className="fan-title">{project.title}</span>
-        {project.subtitle && <span className="fan-sub">{project.subtitle}</span>}
-      </span>
-      <span className="fan-num">{number}</span>
+      <CardFace project={project} number={number} />
     </button>
   );
 }
