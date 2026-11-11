@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import type { PortfolioProject } from "@/data/portfolio";
+import { cardColor } from "@/lib/contrast";
 import { CardFace } from "./ProjectCard";
 
 export const MORPH_MS = 720;
@@ -52,6 +53,11 @@ export default function CardMorph({ project, phase, from, number, onDone }: Prop
       return;
     }
 
+    // 고스트 카드의 글자 크기·여백·모서리를 진짜 카드와 똑같이 (카드 폭 기준 비례 값이라 폭을 넘겨 줘야 함)
+    const cardRect = phase === "open" ? a : b;
+    el.style.setProperty("--card-w", `${cardRect.width}px`);
+    el.style.setProperty("--face-r", `max(12px, ${cardRect.width * 0.034}px)`);
+
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const opts: KeyframeAnimationOptions = { duration: reduce ? 1 : MORPH_MS, easing: EASE, fill: "forwards" };
     const geo = el.animate([box(a), box(b)], opts);
@@ -75,13 +81,13 @@ export default function CardMorph({ project, phase, from, number, onDone }: Prop
       ref={root}
       className="ghost"
       aria-hidden="true"
-      style={{ "--c": project.color ?? "#2b2b33", ...(from ? box(from) : {}) } as React.CSSProperties}
+      style={{ "--c": cardColor(project.color) ?? "var(--card-default)", ...(from ? box(from) : {}) } as React.CSSProperties}
     >
       <div ref={inner} className="ghost-inner">
         <CardFace project={project} number={number} />
         <span className="face face-photo">
           {poster ? (
-            <Image src={poster} alt="" fill sizes="720px" unoptimized draggable={false} className="photo-img" />
+            <Image src={poster} alt="" fill sizes="720px" draggable={false} className="photo-img" />
           ) : (
             <span className="photo-fill" />
           )}

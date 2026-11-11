@@ -19,6 +19,9 @@ const WHEEL_STEP = 70; // 카드 한 장 넘기는 데 필요한 누적 휠 거�
 const WHEEL_COOLDOWN = 170; // ms: 한 장 넘긴 뒤 다음 장까지 최소 간격 (클수록 천천히)
 const WHEEL_MAX_PER_GESTURE = 4; // 한 번 굴려서 넘어가는 최대 카드 수
 const WHEEL_IDLE = 160; // ms: 이 시간 동안 휠 입력이 없으면 다음 제스처로 인정
+const WHEEL_NOTCH_MIN = 90; // 이 이상 한 번에 크게 들어오면 마우스 휠 한 칸으로 봄
+const WHEEL_NOTCH_GAP = 40; // ms: 트랙패드는 이벤트가 이보다 촘촘히 들어옴
+const WHEEL_NOTCH_COOLDOWN = 90; // ms: 휠 한 칸당 한 장, 너무 빠른 연속 입력만 걸러냄
 
 export default function ProjectCarousel({ projects, index, onIndexChange, onOpen, hiddenId, keyboardEnabled }: Props) {
   const n = projects.length;
@@ -26,7 +29,7 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
   const [dragging, setDragging] = useState(false);
   const drag = useRef({ down: false, startX: 0, moved: false });
   const section = useRef<HTMLElement>(null);
-  const wheel = useRef({ acc: 0, lastStep: -1e9, lastEvent: 0, count: 0 });
+  const wheel = useRef({ acc: 0, lastStep: -1e9, lastEvent: 0, count: 0, index: 0 });
 
   // 순환: 처음 카드가 가운데일 때도 왼쪽에 마지막 카드들이 보이도록
   const go = (i: number) => onIndexChange(((i % n) + n) % n);
@@ -55,22 +58,41 @@ export default function ProjectCarousel({ projects, index, onIndexChange, onOpen
     if (!el || !keyboardEnabled || n < 2) return;
     // 상태는 ref에 보관: index가 바뀌어 이 효과가 다시 만들어져도 쿨다운이 유지됨
     const w = wheel.current;
+    w.index = index;
+    const step = (dir: 1 | -1) => {
+      w.index = (w.index + dir + n) % n; // 다시 그려지기 전에 연속으로 와도 한 칸씩 정확히 쌓임
+      onIndexChange(w.index);
+    };
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       const now = performance.now();
       const gap = now - w.lastEvent;
       w.lastEvent = now;
+      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (delta === 0) return;
+
+      // 마우스 휠: 한 칸("또독")에 카드 한 장. 한 칸의 deltaY는 보통 100 안팎, 이벤트 간격도 띄엄띄엄
+      const notch = e.deltaMode !== 0 || (Math.abs(delta) >= WHEEL_NOTCH_MIN && gap > WHEEL_NOTCH_GAP);
+      if (notch) {
+        if (now - w.lastStep >= WHEEL_NOTCH_COOLDOWN) {
+          step(delta > 0 ? 1 : -1);
+          w.lastStep = now;
+        }
+        w.acc = 0;
+        w.count = 0;
+        return;
+      }
+
+      // 트랙패드: 잘게 쪼개진 입력을 모아서, 굴린 만큼 이어서 넘김 (한 번에 최대 4장)
       if (gap > WHEEL_IDLE) {
-        // 휠을 잠시 멈췄다가 다시 굴리면 새 제스처
         w.acc = 0;
         w.count = 0;
       }
-      if (w.count >= WHEEL_MAX_PER_GESTURE) return; // 한 번 굴려서 넘어가는 최대 장수
-      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-      if (w.acc !== 0 && Math.sign(delta) !== Math.sign(w.acc)) w.acc = 0; // 방향을 바꾸면 처음부터
+      if (w.count >= WHEEL_MAX_PER_GESTURE) return;
+      if (w.acc !== 0 && Math.sign(delta) !== Math.sign(w.acc)) w.acc = 0;
       w.acc += delta;
       if (Math.abs(w.acc) >= WHEEL_STEP && now - w.lastStep >= WHEEL_COOLDOWN) {
-        onIndexChange((index + (w.acc > 0 ? 1 : -1) + n) % n);
+        step(w.acc > 0 ? 1 : -1);
         w.acc = 0;
         w.lastStep = now;
         w.count += 1;

@@ -22,10 +22,12 @@ export default function CategoryFilters({ categories, value, onChange }: Props) 
       if (!active) return;
       const first = p.dataset.ready !== "true";
       if (first) p.style.transition = "none"; // 첫 배치는 이동 없이 바로
-      p.style.width = `${active.offsetWidth}px`;
       p.style.height = `${active.offsetHeight}px`;
+      p.style.width = `${active.offsetWidth}px`;
       p.style.transform = `translate(${active.offsetLeft}px, ${active.offsetTop}px)`;
       p.dataset.ready = "true";
+      // 좁은 화면에서 선택 항목이 가려지지 않도록 가로 스크롤 위치 보정
+      w.scrollTo({ left: Math.max(active.offsetLeft - 24, 0), behavior: "smooth" });
       if (first) {
         void p.offsetWidth; // 리플로우 후 전환 복구
         p.style.transition = "";

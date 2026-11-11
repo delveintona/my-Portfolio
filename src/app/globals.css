@@ -1,3 +1,6 @@
+/* Hallmark · shape: card fan · genre: atmospheric · theme: custom (by request) · job: hire · idea: "a film and coding portfolio as a fan of cards" · vibe: "dark, calm, one warm accent" · hero: card fan on the arc · nav: floating pill · footer: none · imagery: product screenshots · signature: the card that flies and flips into its photo
+ * axes: dark · amber accent · card fan · glass controls · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E3 S4 R4 V4 · weakest: E, labels lost the wide tracking so hierarchy now comes from size and weight */
 @import "tailwindcss";
 
 :root {
@@ -7,6 +10,7 @@
   --fg-dim: #a8885a;
   --line: rgba(255, 255, 255, 0.14);
   --accent: #f7b955;
+  --accent-rgb: 247 185 85;
   --ease: cubic-bezier(0.22, 0.8, 0.24, 1);
   --dur: 560ms;
 
@@ -17,6 +21,38 @@
   --glass-edge: rgba(255, 255, 255, 0.2);
   --glass-hi: rgba(255, 255, 255, 0.38);
   --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.38), 0 2px 8px rgba(0, 0, 0, 0.25);
+  /* 색/폰트 토큰 (아래 규칙에서 var()로만 사용) */
+  --font-display: Georgia, "Times New Roman", serif;
+  --card-default: #2b2b33;
+  --fg-mute: #d9b57c;
+  --fg-soft: #e9c485;
+  --ink-0: #07070a;
+  --ink-hi: #fdfcfa;
+  --k-25: rgba(0, 0, 0, 0.25);
+  --k-30: rgba(0, 0, 0, 0.3);
+  --k-50: rgba(0, 0, 0, 0.5);
+  --k-55: rgba(0, 0, 0, 0.55);
+  --k-60: rgba(0, 0, 0, 0.6);
+  --k-70: rgba(0, 0, 0, 0.7);
+  --note: #c9b98a;
+  --photo-bg: #0c0c10;
+  --surface-solid: #1c1c22;
+  --w-12: rgba(255, 255, 255, 0.12);
+  --w-14: rgba(255, 255, 255, 0.14);
+  --w-16: rgba(255, 255, 255, 0.16);
+  --w-18: rgba(255, 255, 255, 0.18);
+  --w-28: rgba(255, 255, 255, 0.28);
+  --w-3: rgba(255, 255, 255, 0.03);
+  --w-40: rgba(255, 255, 255, 0.4);
+  --w-42: rgba(255, 255, 255, 0.42);
+  --w-45: rgba(255, 255, 255, 0.45);
+  --w-5: rgba(255, 255, 255, 0.05);
+  --w-6: rgba(255, 255, 255, 0.06);
+  --w-7: rgba(255, 255, 255, 0.07);
+  --w-78: rgba(255, 255, 255, 0.78);
+  --w-80: rgba(255, 255, 255, 0.8);
+  --scrim: 8 8 11;
+  --scrim-deep: 6 6 10;
 }
 
 /* 콘텐츠 레이어: 유리가 굴절/반사할 풍부한 배경 (고정, 정적) */
@@ -26,11 +62,9 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  /* 색은 하나: 포인트 색 한 가지가 위쪽에서 아주 옅게 번짐 */
   background:
-    radial-gradient(45vmax 38vmax at 12% 18%, rgba(60, 90, 255, 0.34), transparent 70%),
-    radial-gradient(40vmax 34vmax at 88% 22%, rgba(255, 150, 60, 0.28), transparent 70%),
-    radial-gradient(48vmax 40vmax at 70% 92%, rgba(40, 190, 150, 0.24), transparent 70%),
-    radial-gradient(38vmax 32vmax at 18% 88%, rgba(190, 70, 160, 0.26), transparent 70%),
+    radial-gradient(70vmax 46vmax at 50% -8%, rgb(var(--accent-rgb) / 0.1), transparent 70%),
     var(--bg);
 }
 
@@ -39,7 +73,7 @@ body::before {
   backdrop-filter: var(--glass-blur);
   background: var(--glass-fill);
   border: 1px solid var(--glass-edge);
-  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--w-6);
 }
 .glass-strong {
   background: var(--glass-fill-strong);
@@ -48,7 +82,7 @@ body::before {
   .glass {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
-    background: #1c1c22;
+    background: var(--surface-solid);
   }
 }
 @media (prefers-contrast: more) {
@@ -97,10 +131,10 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding-top: clamp(22px, 2.2vw, 80px);
+  padding-top: clamp(24px, 2.2vw, 80px);
 }
 .site-logo {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-display);
   font-style: italic;
   font-size: clamp(26px, 2.2vw, 64px);
   font-weight: 700;
@@ -116,7 +150,6 @@ button {
 .site-label {
   font-size: clamp(11px, 0.95vw, 30px);
   font-weight: 700;
-  letter-spacing: 0.22em;
   color: var(--accent);
 }
 .site-name {
@@ -130,7 +163,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  margin-top: clamp(14px, 1.1vw, 40px);
+  margin-top: clamp(16px, 1.1vw, 40px);
   padding: 0.25vw;
   border-radius: 999px;
   -webkit-backdrop-filter: var(--glass-blur);
@@ -145,8 +178,8 @@ button {
   top: 0;
   left: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 3px 12px rgba(0, 0, 0, 0.3);
+  background: var(--w-18);
+  box-shadow: inset 0 1px 0 var(--w-45), 0 3px 12px var(--k-30);
   opacity: 0;
   pointer-events: none;
   transition:
@@ -161,18 +194,17 @@ button {
 .filter-tab {
   position: relative;
   z-index: 1;
-  padding: clamp(7px, 0.5vw, 16px) clamp(14px, 1.3vw, 40px);
+  padding: clamp(8px, 0.5vw, 16px) clamp(16px, 1.3vw, 40px);
   border: 0;
   border-radius: 999px;
   background: transparent;
   font-size: clamp(12px, 0.95vw, 30px);
   font-weight: 700;
-  letter-spacing: 0.2em;
-  color: #e9c485;
+  color: var(--fg-soft);
   transition: color 0.35s var(--ease);
 }
 .filter-tab:hover {
-  color: #fff;
+  color: var(--ink-hi);
 }
 .filter-tab[data-active="true"] {
   color: var(--accent);
@@ -231,20 +263,21 @@ button {
   width: var(--card-w);
   height: var(--card-h);
   margin-left: calc(var(--card-w) * -0.5);
-  --c: #2b2b33;
+  --c: var(--card-default);
   padding: 0;
   border: 0;
   background: none;
-  color: #fff;
+  color: var(--ink-hi);
   text-align: left;
   transform-origin: 50% calc(var(--card-h) * 0.5 + var(--R));
   transform: rotate(calc(var(--o) * var(--step)));
   scale: calc(1 + (1 - min(var(--ao), 1)) * 0.04);
   transition:
     transform var(--dur) var(--ease),
-    scale var(--dur) var(--ease);
+    scale var(--dur) var(--ease),
+    translate 0.35s var(--ease);
   opacity: 1; /* 카드는 항상 불투명: 뒤 카드가 비치지 않음 */
-  animation: card-in 0.6s var(--ease) both;
+  animation: card-in 0.6s var(--ease) backwards;
 }
 
 /* 카드 면: 단색 (전환 때는 CardMorph 고스트가 같은 면을 사용) */
@@ -263,10 +296,10 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: max(14px, calc(var(--card-w) * 0.06));
+  padding: max(16px, calc(var(--card-w) * 0.06));
   background: var(--c);
-  color: #fff;
-  box-shadow: 0 18px 44px -16px rgba(0, 0, 0, 0.6);
+  color: var(--ink-hi);
+  box-shadow: 0 18px 44px -16px var(--k-60);
 }
 
 /* 상세로 날아가는 고스트 카드 (Y축으로 뒤집혀 사진으로 바뀜) */
@@ -283,8 +316,8 @@ button {
 }
 .face-photo {
   transform: rotateY(180deg);
-  background: #0c0c10;
-  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
+  background: var(--photo-bg);
+  box-shadow: 0 24px 60px -20px var(--k-70);
 }
 .photo-img {
   object-fit: cover;
@@ -314,8 +347,6 @@ button {
 .fan-cat {
   font-size: max(10px, calc(var(--card-w) * 0.034));
   font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -323,7 +354,7 @@ button {
 }
 .fan-period {
   font-size: max(10px, calc(var(--card-w) * 0.033));
-  color: rgba(255, 255, 255, 0.78);
+  color: color-mix(in srgb, var(--ink-hi) 86%, transparent);
 }
 .fan-mid {
   display: flex;
@@ -342,7 +373,7 @@ button {
 }
 .fan-sub {
   font-size: max(11px, calc(var(--card-w) * 0.043));
-  color: rgba(255, 255, 255, 0.8);
+  color: color-mix(in srgb, var(--ink-hi) 88%, transparent);
 }
 .fan-num {
   font-size: max(30px, calc(var(--card-w) * 0.141));
@@ -363,7 +394,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: clamp(18px, 3vw, 40px);
+  gap: clamp(20px, 3vw, 40px);
   z-index: 30;
 }
 .carousel-controls {
@@ -398,7 +429,7 @@ button {
   transition: background 0.3s var(--ease), opacity 0.3s, transform 0.3s var(--ease);
 }
 .round-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.18);
+  background: var(--w-18);
   transform: scale(1.06);
 }
 .round-btn:disabled {
@@ -422,20 +453,20 @@ button {
   z-index: 40;
   display: flex;
   padding: 0;
-  padding: 5px;
+  padding: 4px;
   border-radius: 999px;
   background: var(--glass-fill);
   border: 1px solid var(--glass-edge);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 var(--w-6);
 }
 .app[data-over] .float-nav {
   z-index: 70;
 }
 .nav-item {
   min-width: clamp(84px, 7.15vw, 230px);
-  padding: clamp(9px, 0.55vw, 18px) 10px clamp(8px, 0.45vw, 16px);
+  padding: clamp(8px, 0.55vw, 20px) 12px clamp(8px, 0.45vw, 16px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -458,8 +489,8 @@ button {
   top: 0;
   left: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 2px 10px rgba(0, 0, 0, 0.25);
+  background: var(--w-16);
+  box-shadow: inset 0 1px 0 var(--w-42), 0 2px 10px var(--k-25);
   pointer-events: none;
   transition:
     transform 0.6s cubic-bezier(0.34, 1.3, 0.5, 1),
@@ -474,7 +505,7 @@ button {
   display: grid;
   place-items: center;
   padding: clamp(0px, 3vw, 32px);
-  background: rgba(6, 6, 10, 0.5);
+  background: rgb(var(--scrim-deep) / 0.5);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   animation: fade-in 0.45s var(--ease) both;
@@ -491,10 +522,7 @@ button {
   padding: 0;
   place-items: stretch;
   background:
-    radial-gradient(45vmax 38vmax at 12% 18%, rgba(60, 90, 255, 0.3), transparent 70%),
-    radial-gradient(40vmax 34vmax at 88% 22%, rgba(255, 150, 60, 0.24), transparent 70%),
-    radial-gradient(48vmax 40vmax at 70% 92%, rgba(40, 190, 150, 0.2), transparent 70%),
-    radial-gradient(38vmax 32vmax at 18% 88%, rgba(190, 70, 160, 0.22), transparent 70%),
+    radial-gradient(70vmax 46vmax at 50% -8%, rgb(var(--accent-rgb) / 0.1), transparent 70%),
     var(--bg);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -555,12 +583,12 @@ button {
   background: var(--glass-fill-strong);
   -webkit-backdrop-filter: blur(40px) saturate(1.5);
   backdrop-filter: blur(40px) saturate(1.5);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 var(--glass-hi);
+  box-shadow: 0 30px 80px var(--k-50), inset 0 1px 0 var(--glass-hi);
   animation: panel-in 0.45s var(--ease) both;
 }
 @media (prefers-reduced-transparency: reduce) {
   .dlg-panel {
-    background: #1c1c22;
+    background: var(--surface-solid);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
@@ -576,7 +604,7 @@ button {
   animation: none; /* 미디어 자리가 흔들리면 카드 전환 목표가 어긋남 */
 }
 .dlg-backdrop:has(> .dlg-wide) {
-  background: rgba(8, 8, 11, 0.92);
+  background: rgb(var(--scrim) / 0.92);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -612,21 +640,21 @@ button {
 }
 .link-pill {
   display: inline-block;
-  padding: 9px 16px;
+  padding: 8px 16px;
   border: 1px solid var(--glass-edge);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--w-5);
   font-size: clamp(13px, 1.2vw, 15px);
   transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
 }
 .link-pill:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--w-12);
   border-color: var(--accent);
 }
 
 /* Contact: 작은 중앙 모달 */
 .dlg-backdrop:has(> .dlg-narrow) {
-  background: rgba(8, 8, 11, 0.7);
+  background: rgb(var(--scrim) / 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -636,7 +664,7 @@ button {
   animation: panel-in 0.5s var(--ease) both;
 }
 .dlg-narrow .dlg-scroll {
-  padding: 26px 26px 30px;
+  padding: 28px 28px 32px;
 }
 .dlg-narrow .dlg-close {
   top: 14px;
@@ -646,7 +674,7 @@ button {
 }
 .dlg-narrow .sec {
   font-size: 13px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 .contact-list {
   display: grid;
@@ -656,13 +684,13 @@ button {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 6px;
+  padding: 12px 8px;
   border-radius: 10px;
   font-size: 15px;
   transition: background 0.3s var(--ease), color 0.3s var(--ease);
 }
 .contact-row:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--w-7);
   color: var(--accent);
 }
 .dlg-scroll {
@@ -682,12 +710,12 @@ button {
   place-items: center;
   border-radius: 50%;
   border: 1px solid var(--glass-edge);
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--w-12);
   box-shadow: inset 0 1px 0 var(--glass-hi);
   transition: background 0.3s, border-color 0.3s;
 }
 .dlg-close:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--w-14);
   border-color: var(--accent);
 }
 @media (max-width: 700px) {
@@ -731,10 +759,9 @@ button {
 }
 
 .sec {
-  margin: clamp(26px, 3vw, 40px) 0 12px;
+  margin: clamp(28px, 3vw, 40px) 0 12px;
   font-size: clamp(14px, 1.5vw, 20px);
   font-weight: 700;
-  letter-spacing: 0.3em;
   color: var(--accent);
 }
 .sec:first-child {
@@ -747,7 +774,6 @@ button {
 .eyebrow {
   font-size: clamp(13px, 1.4vw, 19px);
   font-weight: 700;
-  letter-spacing: 0.24em;
   color: var(--accent);
 }
 
@@ -756,7 +782,7 @@ button {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(28px, 4vw, 72px);
-  align-items: center;
+  align-items: start; /* 사진·영상이 아래로 처지지 않고 제목 높이에서 시작 */
 }
 .detail-media {
   width: 100%;
@@ -769,24 +795,23 @@ button {
   border-radius: 22px;
 }
 .detail-text h2 {
-  margin-top: 14px;
+  margin-top: 16px;
   font-size: clamp(30px, 4.2vw, 56px);
   font-weight: 700;
   line-height: 1.1;
 }
 .detail-sub {
-  margin-top: 14px;
+  margin-top: 16px;
   font-size: clamp(16px, 1.7vw, 22px);
-  color: #d9b57c;
+  color: var(--fg-mute);
 }
 .detail-meta {
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 13px;
-  letter-spacing: 0.08em;
   color: var(--fg-dim);
 }
 .detail-desc {
-  margin-top: 26px;
+  margin-top: 28px;
   font-size: clamp(15px, 1.5vw, 19px);
   line-height: 1.8;
   white-space: pre-line;
@@ -816,13 +841,13 @@ button {
 .entries li {
   display: grid;
   grid-template-columns: clamp(86px, 9vw, 190px) 1fr;
-  gap: 14px;
-  padding: 10px 0;
+  gap: 16px;
+  padding: 12px 0;
   font-size: clamp(14px, 1.3vw, 18px);
   line-height: 1.55;
 }
 .entries li span:first-child {
-  color: #d9b57c;
+  color: var(--fg-mute);
 }
 .info-link {
   display: inline-block;
@@ -836,20 +861,20 @@ button {
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 .tags li {
-  padding: 10px 18px;
+  padding: 12px 20px;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--w-3);
   font-size: clamp(13px, 1.2vw, 16px);
 }
 .ph {
-  padding: 12px 14px;
-  border: 1px dashed rgba(255, 255, 255, 0.28);
+  padding: 12px 16px;
+  border: 1px dashed var(--w-28);
   border-radius: 10px;
-  color: #c9b98a;
+  color: var(--note);
   font-size: 14px;
 }
 
@@ -861,18 +886,17 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: clamp(8px, 2vw, 28px);
-  margin-bottom: clamp(26px, 3vw, 44px);
+  margin-bottom: clamp(28px, 3vw, 44px);
   margin-right: 60px;
 }
 .about-tab {
-  padding: 14px clamp(10px, 1.4vw, 24px);
+  padding: 16px clamp(12px, 1.4vw, 24px);
   border: 0;
   border-bottom: 3px solid transparent;
   background: transparent;
   font-size: clamp(13px, 1.5vw, 20px);
   font-weight: 700;
-  letter-spacing: 0.22em;
-  color: #e9c485;
+  color: var(--fg-soft);
   transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
 }
 .about-tab[data-active="true"] {
@@ -899,22 +923,22 @@ button {
   overflow: hidden;
   display: grid;
   place-items: center;
-  border: 1px dashed rgba(255, 255, 255, 0.28);
-  color: #c9b98a;
+  border: 1px dashed var(--w-28);
+  color: var(--note);
   font-size: 14px;
 }
 .about-photo img {
   object-fit: cover;
 }
 .about-name {
-  margin-top: 18px;
+  margin-top: 20px;
   font-size: clamp(20px, 2vw, 28px);
   font-weight: 700;
 }
 .about-name-en {
   margin-top: 4px;
   font-size: 16px;
-  color: #d9b57c;
+  color: var(--fg-mute);
 }
 .about-single {
   max-width: 820px;
@@ -926,7 +950,7 @@ button {
   width: 100%;
   border-radius: 14px;
   overflow: hidden;
-  background: #000;
+  background: var(--ink-0);
 }
 .vp-poster {
   object-fit: cover;
@@ -935,7 +959,7 @@ button {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(120% 70% at 12% -8%, rgba(255, 255, 255, 0.4), transparent 58%),
+    radial-gradient(120% 70% at 12% -8%, var(--w-40), transparent 58%),
     linear-gradient(150deg, color-mix(in srgb, var(--c) 72%, white) 0%, var(--c) 42%, color-mix(in srgb, var(--c) 55%, black) 100%);
 }
 .vp-media {
@@ -944,7 +968,7 @@ button {
   width: 100%;
   height: 100%;
   border: 0;
-  background: #000;
+  background: var(--ink-0);
 }
 .vp-play {
   position: absolute;
@@ -956,34 +980,55 @@ button {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--w-40);
+  background: var(--w-18);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: transform 0.3s var(--ease), background 0.3s;
 }
 .vp-play:hover {
   transform: scale(1.08);
-  background: rgba(255, 255, 255, 0.28);
+  background: var(--w-28);
 }
 .vp-badge {
   position: absolute;
   left: 14px;
   bottom: 14px;
-  padding: 6px 12px;
+  padding: 8px 12px;
   border-radius: 8px;
-  background: rgba(0, 0, 0, 0.55);
+  background: var(--k-55);
   font-size: 12px;
-  letter-spacing: 0.1em;
 }
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
+  /* 움직임(이동·확대)은 없애고, 상태 변화를 알려 주는 짧은 페이드는 유지 */
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.12s !important;
+  }
+  .fan-card,
+  .track,
+  .filter-pill,
+  .nav-pill {
     transition-duration: 0.01ms !important;
+  }
+  .detail-text > *,
+  .dlg-full .about > *,
+  .dlg-full .about-single > *,
+  .dlg-full .about-profile > *,
+  .fan-card {
+    animation: none !important;
+  }
+  .dlg-backdrop,
+  .dlg-panel {
+    animation-duration: 0.18s !important;
+  }
+  .dlg-panel {
+    animation-name: fade-in !important;
   }
 }
 
@@ -1016,4 +1061,220 @@ button {
 .site-logo:hover {
   opacity: 0.8;
   transform: translateY(-1px);
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 700px) {
+  .filters {
+    flex-wrap: nowrap;
+    align-self: stretch;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 4px;
+  }
+  .filter-tab {
+    flex: 0 0 auto;
+    padding: 8px 16px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .carousel {
+    --card-w: 64vw;
+  }
+}
+
+/* 상세의 섹션(CONTRIBUTION/ROLE/AWARD/LINKS) 사이 간격 */
+.detail-text > div {
+  margin-top: clamp(24px, 2.4vw, 36px);
+}
+.detail-text > div > .sec {
+  margin-top: 0;
+}
+
+@media (max-width: 700px) {
+  /* About 탭: 한 줄로, 넘치면 옆으로 스크롤 */
+  .about-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 4px;
+    margin-right: 52px;
+  }
+  .about-tab {
+    flex: 0 0 auto;
+    padding: 12px 12px;
+    font-size: 12px;
+  }
+  .dlg-scroll {
+    padding-bottom: calc(40px + env(safe-area-inset-bottom));
+  }
+  .entries li {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .entries li span:first-child {
+    font-size: 12px;
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 700px) {
+  .about-tabs {
+    margin-right: 0;
+    gap: 0;
+    justify-content: space-between;
+  }
+  .about-tab {
+    padding: 12px 8px;
+    font-size: 11.5px;
+  }
+}
+
+/* Contact 모달은 모바일에서도 전체 화면이 아니라 가운데 작은 카드 */
+@media (max-width: 700px) {
+  .dlg-backdrop:has(> .dlg-narrow) {
+    padding: 16px;
+  }
+  .dlg-panel.dlg-narrow {
+    width: 100%;
+    height: auto;
+    border-radius: 26px;
+  }
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+/* 터치 기기: 누를 수 있는 요소의 최소 높이 */
+@media (max-width: 700px) {
+  .filter-tab {
+    min-height: 40px;
+  }
+  .dlg-narrow .dlg-close {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* 눌림(:active) 상태 */
+.filter-tab:active,
+.nav-item:active,
+.round-btn:not(:disabled):active,
+.link-pill:active,
+.contact-row:active,
+.dlg-close:active,
+.site-logo:active {
+  transform: scale(0.96);
+}
+
+/* 라벨: 자간·대문자 없이 본문 글꼴 그대로 (문장형 표기). 영문 대문자 원문은 첫 글자만 대문자로 */
+.sec,
+.about-tab {
+  text-transform: lowercase;
+}
+.sec::first-letter,
+.about-tab::first-letter {
+  text-transform: uppercase;
+}
+.site-label,
+.fan-cat,
+.eyebrow {
+  font-weight: 600;
+}
+
+/* 상세: 글이 길어 스크롤해도 사진/영상은 위에 붙어 따라옴 */
+@media (min-width: 861px) {
+  .detail-media {
+    position: sticky;
+    top: 8px;
+  }
+}
+
+/* 필터 탭은 처음 모양(넓은 자간, 굵게)으로 되돌림 */
+.filter-tab {
+  letter-spacing: 0.2em;
+  font-weight: 700;
+}
+@media (max-width: 700px) {
+  .filter-tab {
+    letter-spacing: 0.1em;
+  }
+}
+
+/* About이 열려 있어도 로고는 보이고, 누르면 첫 화면으로 */
+.app[data-over="about"] .site-header {
+  position: relative;
+  z-index: 70;
+  pointer-events: none;
+}
+.app[data-over="about"] .site-logo {
+  pointer-events: auto;
+}
+.app[data-over="about"] .site-meta {
+  visibility: hidden;
+}
+
+/* 마우스를 올리면 카드가 살짝 올라와 눌러볼 수 있음을 알려 줌 */
+@media (hover: hover) and (pointer: fine) {
+  .fan-card {
+    cursor: pointer;
+  }
+  .stage[data-dragging="false"] .fan-card:hover {
+    translate: 0 -8px;
+  }
+  .stage[data-dragging="false"] .fan-card[data-active="true"]:hover {
+    translate: 0 -16px;
+  }
+  .stage[data-dragging="false"] .fan-card[data-active="true"]:hover .face-front {
+    box-shadow: 0 28px 56px -16px var(--k-60);
+  }
+}
+.fan-card[data-hidden="true"] {
+  translate: none !important;
+}
+
+/* 상세: 왼쪽 사진/영상은 고정, 오른쪽 글만 따로 스크롤 */
+@media (min-width: 861px) {
+  .dlg-panel.dlg-wide {
+    height: 100%;
+  }
+  .dlg-wide .dlg-scroll {
+    height: 100%;
+    overflow: hidden;
+    padding: 0 clamp(20px, 3vw, 40px);
+  }
+  .detail {
+    height: 100%;
+    align-items: start;
+  }
+  .detail-media {
+    position: static;
+    margin-top: clamp(48px, 12vh, 140px);
+  }
+  .detail-text {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: clamp(48px, 12vh, 140px) 0 clamp(48px, 8vh, 96px);
+  }
+}
+
+/* 상세: ROLE / PERIOD 행 */
+.detail-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 32px;
+  margin-top: clamp(24px, 3vw, 40px);
+  font-size: clamp(14px, 1.2vw, 17px);
+}
+.detail-facts dt {
+  color: var(--fg-dim);
+}
+.detail-facts dd {
+  margin: 0;
+}
+.detail-text .tags li {
+  font-size: clamp(13px, 1.05vw, 15px);
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import type { PortfolioProject } from "@/data/portfolio";
+import { cardColor } from "@/lib/contrast";
 
 type Props = {
   project: PortfolioProject;
@@ -51,7 +52,7 @@ export default function ProjectCard({ project, offset, total, position, hidden, 
         {
           "--o": offset,
           "--ao": Math.abs(offset),
-          ...(project.color ? { "--c": project.color } : {}),
+          ...(project.color ? { "--c": cardColor(project.color) } : {}),
           zIndex: 20 - Math.abs(offset),
         } as React.CSSProperties
       }

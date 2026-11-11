@@ -47,8 +47,8 @@ export default function FloatingNavigation({ active, onSelect }: { active: NavKe
       if (!w || !p || !el) return;
       const first = p.dataset.ready !== "true";
       if (first) p.style.transition = "none";
-      p.style.width = `${el.offsetWidth}px`;
       p.style.height = `${el.offsetHeight}px`;
+      p.style.width = `${el.offsetWidth}px`;
       p.style.transform = `translate(${el.offsetLeft}px, ${el.offsetTop}px)`;
       p.dataset.ready = "true";
       if (first) {

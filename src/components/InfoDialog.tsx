@@ -66,7 +66,7 @@ export function AboutDialog({ onClose }: { onClose: () => void }) {
             <div className="about-photo-col">
               <div className="about-photo">
                 {profile.photo ? (
-                  <Image src={profile.photo} alt={profile.nameKo} fill sizes="320px" unoptimized />
+                  <Image src={profile.photo} alt={profile.nameKo} fill sizes="320px" />
                 ) : (
                   <span>[프로필 사진]</span>
                 )}

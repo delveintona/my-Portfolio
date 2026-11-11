@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { PortfolioProject } from "@/data/portfolio";
+import { cardColor } from "@/lib/contrast";
 
 function isSafeEmbed(url: string) {
   try {
@@ -19,7 +20,7 @@ function isSafeEmbed(url: string) {
 /** 포스터 클릭 후 재생. 자동 재생 없음, 미디어는 사용자가 누를 때만 로드 */
 export default function VideoPlayer({ project }: { project: PortfolioProject }) {
   const { video, thumbnail, aspectRatio = "16/9", title } = project;
-  const fill = project.color ?? "#2b2b33";
+  const fill = cardColor(project.color) ?? "var(--card-default)";
   const [started, setStarted] = useState(false);
   const [failed, setFailed] = useState(false);
   const poster = video?.poster ?? thumbnail ?? "";
@@ -30,7 +31,7 @@ export default function VideoPlayer({ project }: { project: PortfolioProject }) 
     !!video && !!src && !failed && (video.type === "file" || isSafeEmbed(src));
 
   const posterEl = poster ? (
-    <Image src={poster} alt="" fill sizes="(max-width: 900px) 100vw, 900px" unoptimized className="vp-poster" />
+    <Image src={poster} alt="" fill sizes="(max-width: 900px) 100vw, 900px" className="vp-poster" />
   ) : (
     <div className="vp-fill" style={{ "--c": fill } as React.CSSProperties} />
   );

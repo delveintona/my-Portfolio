@@ -26,7 +26,12 @@ export type PortfolioProject = {
     src: string; // file: "/videos/xxx.mp4" · youtube/vimeo: 임베드 URL
     poster?: string;
   };
-  description?: string;
+  objective?: string; // 무엇을 하려 했나 (1~2줄)
+  strategy?: string; // 어떻게 했나 (1~2줄)
+  outcome?: string; // 결과 (1~2줄)
+  tools?: string[]; // 사용 도구
+  when?: string; // PERIOD 칸에 표시할 기간
+  description?: string; // (대체용) 긴 설명이 꼭 필요할 때만
   contribution?: string;
   awards?: { year: string; text: string }[];
   credits?: string[];
@@ -41,7 +46,7 @@ export const profile = {
   initials: "delveintona", // 좌측 상단 로고 텍스트
   nameKo: "정수민",
   nameEn: "Jung Sumin",
-  headerLabel: "2026 PORTFOLIO /",
+  headerLabel: "2026 Portfolio /",
   photo: "/profile.webp",
   about: "사람의 시선에 대해서 탐구하는 중입니다.",
   interested: ["영상 제작", "컬러 그레이딩", "영상 기획", "마케팅"],
@@ -105,9 +110,9 @@ export const projects: PortfolioProject[] = [
     period: "2건",
     color: "#2b4fd6",
     role: ["촬영팀"],
-    contribution: "촬영팀 · 단편영화 2건",
-    description:
-      "단편영화 촬영팀으로 현장에 참여했습니다.\n『늪에 비친 새』(독립 단편영화)와 미국 단편영화(해외 제작) 두 작품에서 카메라 세팅과 촬영 진행을 함께하며, 한 컷을 만들기 위해 팀이 어떻게 움직이는지 현장에서 익혔습니다.\n두 작품 모두 아직 공개 전이라 상세 내용은 공개 후 업데이트합니다.",
+    objective: "『늪에 비친 새』와 미국 단편영화, 두 작품의 촬영팀으로 참여했습니다.",
+    strategy: "현장 촬영을 도우며 한 컷을 만들기 위해 팀이 움직이는 방식을 익혔습니다.",
+    outcome: "두 작품 모두 공개 전입니다.",
     featured: true,
   },
   {
@@ -120,37 +125,34 @@ export const projects: PortfolioProject[] = [
     color: "#3f9a5a",
     role: ["촬영팀"],
     projectType: "client",
-    contribution: "촬영팀 · 광고 3건",
-    description:
-      "상업 광고 촬영팀으로 3건에 참여했습니다.\n리코브, 아큐브, 도화엔지니어링 광고 현장에서 정해진 시간 안에 컷을 확보해야 하는 촬영팀의 역할과 현장 흐름을 실무로 경험했습니다.",
+    objective: "리코브, 아큐브, 도화엔지니어링 광고 3건에 촬영팀으로 참여했습니다.",
+    strategy: "정해진 시간 안에 컷을 확보해야 하는 광고 현장의 촬영 흐름을 경험했습니다.",
     featured: true,
   },
   {
     id: "babsikgi",
     title: "『밥 식기 전에 들어와』",
     eyebrow: "Short Film · Director of Photography",
-    subtitle: "결 스튜디오 · 촬영감독",
+    subtitle: "결 스튜디오 단편영화",
     category: "키스탭",
     period: "촬영감독",
     color: "#d9663f",
     role: ["촬영감독"],
-    contribution: "촬영감독",
-    description:
-      "결 스튜디오의 단편영화 『밥 식기 전에 들어와』에서 촬영감독을 맡았습니다.\n작품의 분위기에 맞는 화면 구도와 촬영 방식을 정하고, 현장에서 촬영을 이끌었습니다.",
+    objective: "결 스튜디오 단편영화에서 촬영감독을 맡았습니다.",
+    strategy: "작품 분위기에 맞는 구도와 촬영 방식을 정하고 현장 촬영을 이끌었습니다.",
     featured: true,
   },
   {
     id: "sindorim-psycho",
     title: "『신도림 사이코』",
     eyebrow: "Short Film · Director of Photography",
-    subtitle: "결 스튜디오 · 촬영감독",
+    subtitle: "결 스튜디오 단편영화",
     category: "키스탭",
     period: "촬영감독",
     color: "#7442d6",
     role: ["촬영감독"],
-    contribution: "촬영감독",
-    description:
-      "결 스튜디오의 단편영화 『신도림 사이코』에서 촬영감독을 맡았습니다.\n장면의 긴장감을 살리는 카메라 움직임과 구도를 고민하며 촬영을 이끌었습니다.",
+    objective: "결 스튜디오 단편영화에서 촬영감독을 맡았습니다.",
+    strategy: "장면의 긴장감을 살리는 카메라 움직임과 구도를 설계했습니다.",
     featured: true,
   },
   {
@@ -162,9 +164,9 @@ export const projects: PortfolioProject[] = [
     period: "2026.07 ~ 현재",
     color: "#a8913a",
     role: ["SNS팀 팀장", "행사 촬영", "숏폼 제작"],
-    contribution: "SNS팀 팀장 · 기획·운영·촬영",
-    description:
-      "UIA(대학 임팩트 얼라이언스)는 9개 대학 11개 캠퍼스가 모인 연합 조직입니다.\nSNS팀 팀장으로 공식 SNS를 기획·운영하고, 행사를 직접 촬영해 하이라이트와 숏폼 영상으로 만들고 있습니다.",
+    objective: "연합 공식 SNS를 기획·운영하며 행사를 알립니다.",
+    strategy: "행사를 직접 촬영해 하이라이트와 숏폼 영상으로 제작합니다.",
+    when: "2026.07 ~ 현재",
   },
   {
     id: "koyeon-cheer",
@@ -175,23 +177,23 @@ export const projects: PortfolioProject[] = [
     period: "2026.08 ~ 2026.10",
     color: "#9a6a82",
     role: ["전담 촬영"],
-    contribution: "전담 촬영 (2개월)",
-    description:
-      "고연전 불꽃응원단의 활동을 2개월 동안 전담으로 촬영했습니다.\n정기 연습부터 공연까지 응원단 활동의 전 과정을 영상으로 기록했습니다.",
+    objective: "응원단의 활동을 처음부터 끝까지 영상으로 기록했습니다.",
+    strategy: "정기 연습부터 공연까지 2개월 동안 전담으로 촬영했습니다.",
+    when: "2026.08 ~ 2026.10",
   },
   {
     id: "music-video-nothing",
     title: "「아무것도 아니야」 뮤직비디오",
     eyebrow: "Music Video · School Project",
-    subtitle: "일본어 콘텐츠 제작 · 교내 장려상",
+    subtitle: "일본어 콘텐츠 제작 과제",
     category: "키스탭",
     period: "2021",
     color: "#c2603f",
-    role: ["PD", "촬영", "기획", "배우 섭외"],
-    contribution: "PD · 촬영 · 기획 · 배우 섭외 (전 과정 총괄)",
+    role: ["PD", "기획", "촬영", "배우 섭외"],
+    objective: "일본어 콘텐츠 제작 과제로 뮤직비디오를 만들었습니다.",
+    strategy: "PD로서 기획, 촬영, 배우 섭외까지 전 과정을 직접 맡았습니다.",
     awards: [{ year: "2021", text: "교내 일본어 콘텐츠 제작 장려상 — 대동세무고등학교" }],
-    description:
-      "대동세무고등학교 재학 시절, 일본어 콘텐츠 제작 과제로 「아무것도 아니야」 뮤직비디오를 만들어 교내 장려상을 받았습니다.\nPD로서 기획부터 촬영, 배우 섭외까지 전 과정을 직접 맡았습니다.",
+    when: "2021",
   },
   {
     id: "short-film-directing",
@@ -202,9 +204,8 @@ export const projects: PortfolioProject[] = [
     period: "단편영화",
     color: "#7a5ab8",
     role: ["연출팀"],
-    contribution: "연출팀",
-    description:
-      "단편영화 『청소』에서 연출팀으로 참여했습니다.\n촬영 전 준비부터 현장 진행까지 연출 파트를 도우며 작품이 만들어지는 전체 과정을 가까이에서 경험했습니다.",
+    objective: "단편영화 『청소』에서 연출팀으로 참여했습니다.",
+    strategy: "촬영 전 준비부터 현장 진행까지 연출 파트를 도왔습니다.",
   },
   {
     id: "volume-up",
@@ -218,24 +219,25 @@ export const projects: PortfolioProject[] = [
     thumbnail: "/projects/volume-up.webp",
     aspectRatio: "922/1306",
     role: ["기획", "현장조사"],
-    contribution: "기획 · 현장조사",
+    objective: "청소년이 찾지 않는 춘천시립청소년도서관 2층을 청소년 공간으로 되돌립니다.",
+    strategy: "2층을 소리 크기별로 나누고, 중·고교 동아리가 모인 운영위원회가 직접 운영합니다.",
     awards: [{ year: "2026", text: "UIA 춘천 해커톤 우수상 — 루트임팩트 대표" }],
-    description:
-      "춘천의 청소년 인구 감소 문제에서 출발한 공공 서비스 디자인입니다.\n청소년이 찾지 않던 춘천시립청소년도서관 2층을 '떠드는 곳'과 '조용한 곳'으로 나누고, 춘천 관내 중·고등학교 동아리가 모인 청소년 운영위원회가 그 층을 운영하도록 설계했습니다.\n소리 크기별 공간 구성(Solution 01)과 어른이 아닌 청소년이 책과 규칙을 정하는 운영 구조(Solution 02)를 제안했습니다.",
+    when: "2026",
   },
   {
     id: "sejong-rookie-label",
     title: "세종 루키 레이블",
     eyebrow: "Youth Culture Living Lab",
-    subtitle: "대학생 크루와 중·고교 공연동아리가 함께 만드는 청소년 문화 리빙랩",
+    subtitle: "대학생 크루와 공연동아리가 함께 만드는 청소년 문화 리빙랩",
     category: "기획",
     period: "2026 · 2차 발표평가",
     color: "#2f9e8f",
     projectType: "collaboration",
     role: ["기획", "조사", "설계", "발표 자료 제작"],
-    contribution: "기획 · 조사 · 설계 · 발표 자료 제작 — 전 과정 담당 (팀 온동네)",
-    description:
-      "2026 세종한두리캠퍼스 글로벌 리빙랩 공모전(문화·관광 분야) 2차 발표평가에 팀 온동네로 참여한 기획입니다.\n학교 축제 무대를 마친 공연동아리 학생들이 '그다음은 어떻게 하지?'라는 질문 앞에서 막막해하는 문제에서 출발했습니다. 외부 무대에 서려면 무대 섭외, 장비·음향, 홍보, 촬영·기록, 학교·보호자 허락까지 직접 해결해야 하지만 물어볼 사람이 없다는 점에 주목했습니다.\n해결 방안은 세종의 중2~고2 공연동아리 1팀과 한두리캠퍼스 대학생 크루 3~4명(촬영·기획·디자인·홍보)이 섭외부터 기록까지 한 팀으로 움직이는 구조입니다. 새 공연장 없이 대학 축제 '루키 스테이지'(봄 데뷔 → 9월 공동캠퍼스 피날레)를 활용합니다.\n조사, 공동 설계, 시범 운영, 검증, 확산의 리빙랩 5단계로 설계했고, 설문 100명·인터뷰 13명 조사와 3팀 시범 운영, 누적 관객 300명 이상을 목표로 효과를 검증하는 계획까지 담았습니다.\n공모전 2차 발표평가까지 진출했습니다.",
+    objective: "학교 무대 다음으로 가는 길을 모르는 공연동아리 청소년의 막막함을 풀어 줍니다.",
+    strategy: "대학생 크루와 한 팀이 되어 대학 축제 무대를 활용하고, 리빙랩 5단계로 검증합니다.",
+    outcome: "2026 세종한두리캠퍼스 글로벌 리빙랩 공모전 2차 발표평가 진출 (팀 온동네).",
+    when: "2026",
   },
   {
     id: "solopd",
@@ -247,12 +249,14 @@ export const projects: PortfolioProject[] = [
     color: "#2a8c8c",
     projectType: "personal",
     role: ["기획", "디자인", "개발"],
-    contribution: "기획 · 디자인 · 개발 — 제작 기간 약 1주일",
     thumbnail: "/projects/solopd.png",
     aspectRatio: "1866/1049",
-    description:
-      "혼자 찍을 때 옆에서 흐름을 잡아 주는 현장 PD 같은 웹 서비스입니다.\n기획서와 콘티를 올리면 촬영 중 발화를 듣고 흐름을 코칭하며, 제목 짓기부터 말해 보기, 리포트 확인까지 단계마다 안내합니다.\n영상은 폴더로 정리하고, PT 가이드 모드로 바꿀 수 있으며, 처음 쓰는 사람을 위해 1분 실습 예시도 넣었습니다.\n사용 기술: Gemini API · Vercel · Claude Code",
+    objective: "혼자 촬영하는 1인 유튜버 곁에서 흐름을 잡아 주는 현장 PD가 되어 줍니다.",
+    strategy: "기획서와 콘티를 올리면 촬영 중 발화를 듣고 실시간으로 흐름을 코칭합니다.",
+    outcome: "웹으로 배포해 사용 중입니다.",
+    tools: ["Gemini API", "Vercel", "Claude Code"],
     links: [{ label: "solopd.vercel.app", url: "https://solopd.vercel.app" }],
+    when: "제작 1주",
   },
   {
     id: "drivers-guide",
@@ -264,12 +268,14 @@ export const projects: PortfolioProject[] = [
     color: "#4a6a3a",
     projectType: "personal",
     role: ["기획", "디자인", "개발"],
-    contribution: "기획 · 디자인 · 개발 — 제작 기간 1일",
     thumbnail: "/projects/drivers-guide.webp",
     aspectRatio: "2000/1250",
-    description:
-      "운전병 복무 경험에서 출발한, 차폭감을 눈으로 익히는 시뮬레이션 웹입니다.\n굴절, S자, T자 코스를 골라 위에서 본 화면과 운전석 시점, 좌우 사이드미러를 번갈아 보며 직접 운전해 볼 수 있습니다.\n제한 시간과 바퀴 접촉 허용 횟수를 두었고, 차량 치수도 조정할 수 있습니다.\n사용 기술: Claude Code · Vercel",
+    objective: "운전병 복무 경험에서 출발해 차폭감을 눈으로 익히게 합니다.",
+    strategy: "굴절, S자, T자 코스를 위에서 본 화면과 운전석 시점, 사이드미러로 연습합니다.",
+    outcome: "웹으로 배포했습니다.",
+    tools: ["Claude Code", "Vercel"],
     links: [{ label: "driver-s-guide.vercel.app", url: "https://driver-s-guide.vercel.app/" }],
+    when: "제작 1일",
   },
   {
     id: "diary-alarm",
@@ -281,11 +287,13 @@ export const projects: PortfolioProject[] = [
     color: "#b4456a",
     projectType: "personal",
     role: ["기획", "디자인", "개발"],
-    contribution: "기획 · 디자인 · 개발 — 제작 기간 약 1주일 (미배포)",
     thumbnail: "/projects/diary-alarm.png",
     aspectRatio: "626/1337",
-    description:
-      "알람을 끄려면 오늘의 계획을 써야 하는 기상 앱입니다.\n저녁에는 '오늘 하루 어떠셨나요?'라는 질문에 일기를 쓰고 기분을 고르면, 하루 일과와 일기를 바탕으로 나만의 노래를 만들어 줍니다.\n캘린더, 알람, 일기, 음악, 저장 탭으로 하루를 이어서 기록합니다.\n사용 기술: Supabase · Google Lyria · Claude Code (현재 개발 중, 미배포)",
+    objective: "알람을 끄려면 오늘의 계획을 쓰게 해 하루를 시작하게 합니다.",
+    strategy: "저녁에 쓴 일기와 하루 일과를 바탕으로 나만의 노래를 만들어 줍니다.",
+    outcome: "개발 중입니다. 아직 배포 전입니다.",
+    tools: ["Supabase", "Google Lyria", "Claude Code"],
+    when: "제작 1주",
   },
 ];
 

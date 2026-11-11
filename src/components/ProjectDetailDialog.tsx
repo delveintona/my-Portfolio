@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { projectTypeLabel, type PortfolioProject } from "@/data/portfolio";
+import type { PortfolioProject } from "@/data/portfolio";
 import Dialog from "./Dialog";
 import VideoPlayer from "./VideoPlayer";
 import { MORPH_MS } from "./CardMorph";
@@ -19,10 +19,9 @@ type Props = {
   onClose: () => void;
 };
 
+/** 왼쪽 사진/영상은 고정, 오른쪽 글만 따로 스크롤 */
 export default function ProjectDetailDialog({ project, mediaHidden, onCloseStart, onClose }: Props) {
-  const meta = [project.category, project.period ?? project.year, project.projectType && projectTypeLabel[project.projectType]]
-    .filter(Boolean)
-    .join(" · ");
+  const { objective, strategy, outcome, tools, links, awards, role, when, description } = project;
 
   return (
     <Dialog label={project.title} onClose={onClose} onCloseStart={onCloseStart} exitMs={MORPH_MS + 60} wide>
@@ -40,29 +39,35 @@ export default function ProjectDetailDialog({ project, mediaHidden, onCloseStart
           {project.eyebrow && <p className="eyebrow">{project.eyebrow}</p>}
           <h2>{project.title}</h2>
           {project.subtitle && <p className="detail-sub">{project.subtitle}</p>}
-          <p className="detail-meta">{meta}</p>
 
-          {project.description && <p className="detail-desc">{project.description}</p>}
-
-          {project.contribution && (
+          {objective && (
             <div>
-              <h3 className="sec">CONTRIBUTION</h3>
-              <p className="lead">{project.contribution}</p>
+              <h3 className="sec">Objective</h3>
+              <p className="lead">{objective}</p>
             </div>
           )}
-
-          {project.role && project.role.length > 0 && (
+          {strategy && (
             <div>
-              <h3 className="sec">ROLE</h3>
-              <p className="lead">{project.role.join(", ")}</p>
+              <h3 className="sec">Strategy</h3>
+              <p className="lead">{strategy}</p>
             </div>
           )}
-
-          {project.awards && project.awards.length > 0 && (
+          {outcome && (
             <div>
-              <h3 className="sec">AWARD</h3>
+              <h3 className="sec">Outcome</h3>
+              <p className="lead">{outcome}</p>
+            </div>
+          )}
+          {!objective && !strategy && description && (
+            <div>
+              <p className="lead detail-desc">{description}</p>
+            </div>
+          )}
+          {awards && awards.length > 0 && (
+            <div>
+              <h3 className="sec">Award</h3>
               <ul className="entries">
-                {project.awards.map((a) => (
+                {awards.map((a) => (
                   <li key={a.year + a.text}>
                     <span>{a.year}</span>
                     <span>{a.text}</span>
@@ -71,19 +76,21 @@ export default function ProjectDetailDialog({ project, mediaHidden, onCloseStart
               </ul>
             </div>
           )}
-
-          {project.credits && project.credits.length > 0 && (
+          {tools && tools.length > 0 && (
             <div>
-              <h3 className="sec">CREDITS</h3>
-              <p className="lead">{project.credits.join(" / ")}</p>
+              <h3 className="sec">Tools</h3>
+              <ul className="tags">
+                {tools.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
             </div>
           )}
-
-          {project.links && project.links.length > 0 && (
+          {links && links.length > 0 && (
             <div>
-              <h3 className="sec">LINKS</h3>
+              <h3 className="sec">Links</h3>
               <ul className="link-pills">
-                {project.links.map((l) => (
+                {links.map((l) => (
                   <li key={l.url}>
                     <a className="link-pill" href={l.url} target="_blank" rel="noopener noreferrer">
                       {l.label} ↗
@@ -93,17 +100,34 @@ export default function ProjectDetailDialog({ project, mediaHidden, onCloseStart
               </ul>
             </div>
           )}
-        </div>
 
-        {project.stills && project.stills.length > 0 && (
-          <div className="detail-stills">
-            {project.stills.map((s, i) => (
-              <div key={s} className="still">
-                <Image src={s} alt={`${project.title} 스틸 ${i + 1}`} fill sizes="(max-width: 900px) 100vw, 450px" unoptimized loading="lazy" />
-              </div>
-            ))}
-          </div>
-        )}
+          {((role && role.length > 0) || when) && (
+            <dl className="detail-facts">
+              {role && role.length > 0 && (
+                <>
+                  <dt>Role</dt>
+                  <dd>{role.join(" / ")}</dd>
+                </>
+              )}
+              {when && (
+                <>
+                  <dt>Period</dt>
+                  <dd>{when}</dd>
+                </>
+              )}
+            </dl>
+          )}
+
+          {project.stills && project.stills.length > 0 && (
+            <div className="detail-stills">
+              {project.stills.map((s, i) => (
+                <div key={s} className="still">
+                  <Image src={s} alt={`${project.title} 스틸 ${i + 1}`} fill sizes="(max-width: 900px) 100vw, 450px" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </article>
     </Dialog>
   );
