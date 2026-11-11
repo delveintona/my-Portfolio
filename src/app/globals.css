@@ -1278,3 +1278,9 @@ body {
 .detail-text .tags li {
   font-size: clamp(13px, 1.05vw, 15px);
 }
+
+/* About: 스크롤하면 내용이 위쪽 로고 영역과 아래쪽 메뉴 영역에서 부드럽게 사라짐 (로고는 고정) */
+.dlg-full .dlg-scroll {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 40px, #000 120px, #000 calc(100% - 140px), transparent calc(100% - 56px));
+  mask-image: linear-gradient(to bottom, transparent 0, transparent 40px, #000 120px, #000 calc(100% - 140px), transparent calc(100% - 56px));
+}
